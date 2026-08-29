@@ -1,0 +1,10 @@
+{
+  "config": {
+    // Tables and long primary-source URLs are intentionally not hard-wrapped.
+    "MD013": false
+  },
+  "ignores": [
+    ".omc/**",
+    "Salvage-diagrams.md"
+  ]
+}

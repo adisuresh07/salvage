@@ -1,0 +1,47 @@
+# Local agent/session state
+.omc/
+.claude/settings.local.json
+
+# Secrets and machine-specific configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+.coverage
+coverage.xml
+htmlcov/
+
+# Node and browser tooling
+node_modules/
+console/node_modules/
+console/dist/
+playwright-report/
+test-results/
+coverage/
+
+# Generated runtime and evaluation data
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+artifacts/
+results/
+
+# Operating systems and editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
