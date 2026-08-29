@@ -52,3 +52,9 @@ When those sources conflict with an accepted ADR or a maintained document under
 
 This project belongs only to the personal GitHub account `rajpaladitiya`. Never
 create or mutate project resources in EC-aware or another organization.
+
+## License
+
+Salvage source code and maintained project documentation are available under the
+[MIT License](LICENSE). Third-party dependencies and historical source artifacts
+retain their own applicable terms.

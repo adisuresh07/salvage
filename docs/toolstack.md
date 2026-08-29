@@ -1,8 +1,7 @@
 # Development and delivery toolstack
 
-Status: Accepted for MVP planning
-
-Last reviewed: 2026-08-29
+- **Status:** Accepted for MVP planning
+- **Last reviewed:** 2026-08-29
 
 Every mandatory tool is free to use. Hosted features are either free for a
 personal/public repository or have a local fallback.

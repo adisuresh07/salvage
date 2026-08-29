@@ -1,8 +1,7 @@
 # ADR-0001: Python modular monolith with a read-only React console
 
-Status: Accepted
-
-Date: 2026-08-29
+- **Status:** Accepted
+- **Date:** 2026-08-29
 
 ## Context
 

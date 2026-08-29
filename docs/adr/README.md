@@ -18,7 +18,8 @@ Use `NNNN-short-kebab-title.md`.
 ```markdown
 # ADR-NNNN: Decision title
 
-Status: Proposed Date: YYYY-MM-DD
+- **Status:** Proposed
+- **Date:** YYYY-MM-DD
 
 ## Context
 

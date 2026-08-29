@@ -1,8 +1,7 @@
 # ADR-0004: Deterministic action authority; models are advisory only
 
-Status: Accepted
-
-Date: 2026-08-29
+- **Status:** Accepted
+- **Date:** 2026-08-29
 
 ## Context
 

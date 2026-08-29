@@ -1,8 +1,7 @@
 # ADR-0012: Free-only MVP cost boundary
 
-Status: Accepted
-
-Date: 2026-08-29
+- **Status:** Accepted
+- **Date:** 2026-08-29
 
 ## Context
 

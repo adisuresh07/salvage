@@ -1,8 +1,7 @@
 # Architecture
 
-Status: Accepted for MVP implementation
-
-Last reviewed: 2026-08-29
+- **Status:** Accepted for MVP implementation
+- **Last reviewed:** 2026-08-29
 
 ## 1. Architectural thesis
 

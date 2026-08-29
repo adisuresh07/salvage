@@ -1,8 +1,7 @@
 # ADR-0006: Effect intents, idempotency, and outbox
 
-Status: Accepted
-
-Date: 2026-08-29
+- **Status:** Accepted
+- **Date:** 2026-08-29
 
 ## Context
 

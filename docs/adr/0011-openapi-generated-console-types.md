@@ -1,8 +1,7 @@
 # ADR-0011: Generate console types from OpenAPI
 
-Status: Accepted
-
-Date: 2026-08-29
+- **Status:** Accepted
+- **Date:** 2026-08-29
 
 ## Context
 

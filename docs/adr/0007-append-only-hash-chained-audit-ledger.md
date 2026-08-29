@@ -1,8 +1,7 @@
 # ADR-0007: Append-only hash-chained audit ledger
 
-Status: Accepted
-
-Date: 2026-08-29
+- **Status:** Accepted
+- **Date:** 2026-08-29
 
 ## Context
 

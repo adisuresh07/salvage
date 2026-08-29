@@ -1,8 +1,7 @@
 # ADR-0002: SQLite storage and durable job queue
 
-Status: Accepted
-
-Date: 2026-08-29
+- **Status:** Accepted
+- **Date:** 2026-08-29
 
 ## Context
 

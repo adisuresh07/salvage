@@ -1,10 +1,9 @@
 # MVP implementation plan
 
-Plan date: 2026-08-29
-
-Target release candidate: 2026-09-03
-
-Buildathon deadline: 2026-09-05 Budget: approximately 30 focused hours
+- **Plan date:** 2026-08-29
+- **Target release candidate:** 2026-09-03
+- **Buildathon deadline:** 2026-09-05
+- **Budget:** approximately 30 focused hours
 
 ## 1. Outcome
 

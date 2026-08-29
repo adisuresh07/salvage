@@ -1,8 +1,7 @@
 # Product requirements
 
-Status: Approved for MVP planning
-
-Last reviewed: 2026-08-29
+- **Status:** Approved for MVP planning
+- **Last reviewed:** 2026-08-29
 
 ## 1. Product statement
 

@@ -1,8 +1,7 @@
 # Test plan
 
-Status: Required MVP test strategy
-
-Last reviewed: 2026-08-29
+- **Status:** Required MVP test strategy
+- **Last reviewed:** 2026-08-29
 
 ## 1. Purpose
 

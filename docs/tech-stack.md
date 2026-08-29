@@ -1,7 +1,7 @@
 # Technology stack
 
-Status: Accepted baseline for the MVP Registry and documentation check:
-2026-08-29
+- **Status:** Accepted baseline for the MVP
+- **Registry and documentation check:** 2026-08-29
 
 Exact versions below are the scaffold baseline. Lockfiles are authoritative
 after implementation begins; update this document when a major dependency or its

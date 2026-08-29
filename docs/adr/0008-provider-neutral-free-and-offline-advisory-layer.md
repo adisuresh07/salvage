@@ -1,8 +1,7 @@
 # ADR-0008: Provider-neutral, free, and offline advisory layer
 
-Status: Accepted
-
-Date: 2026-08-29
+- **Status:** Accepted
+- **Date:** 2026-08-29
 
 ## Context
 

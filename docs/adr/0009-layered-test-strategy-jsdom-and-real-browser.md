@@ -1,8 +1,7 @@
 # ADR-0009: Layered tests using jsdom and real browsers
 
-Status: Accepted
-
-Date: 2026-08-29
+- **Status:** Accepted
+- **Date:** 2026-08-29
 
 ## Context
 

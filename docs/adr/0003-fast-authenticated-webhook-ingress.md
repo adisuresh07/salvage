@@ -1,8 +1,7 @@
 # ADR-0003: Fast authenticated webhook ingress
 
-Status: Accepted
-
-Date: 2026-08-29
+- **Status:** Accepted
+- **Date:** 2026-08-29
 
 ## Context
 

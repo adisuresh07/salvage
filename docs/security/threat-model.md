@@ -1,8 +1,7 @@
 # Threat model
 
-Status: Required MVP controls
-
-Last reviewed: 2026-08-29
+- **Status:** Required MVP controls
+- **Last reviewed:** 2026-08-29
 
 ## 1. Scope and assets
 

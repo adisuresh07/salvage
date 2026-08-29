@@ -1,8 +1,7 @@
 # ADR-0005: Unknown reasons fail closed
 
-Status: Accepted
-
-Date: 2026-08-29
+- **Status:** Accepted
+- **Date:** 2026-08-29
 
 ## Context
 
