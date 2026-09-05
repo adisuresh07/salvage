@@ -80,29 +80,208 @@ flowchart LR
 
 ---
 
-## 📐 Interactive Architecture & Flow Diagrams
+## 📐 Architecture & Flow Diagrams (Rendered In-Line)
 
-Salvage provides interactive architecture and workflow visualizations generated with **Archify**:
+All core architecture, sequence, decision pipeline, and lifecycle flows are rendered natively below. Interactive showcase versions generated via [Archify](https://github.com/tt-a1i/archify) are also available in `docs/flows/html/`.
 
 <div align="center">
 
-| Diagram | Type | Interactive Showcase | Markdown Spec |
+| Diagram | Type | Interactive HTML Showcase | Raw Specification |
 | :--- | :---: | :---: | :---: |
-| **System Architecture** | Architecture | [Interactive HTML Flow](docs/flows/html/system-architecture.html) | [Architecture Doc](docs/flows/system-architecture.md) |
-| **Recovery Sequence** | Sequence | [Interactive HTML Flow](docs/flows/html/recovery-sequence.html) | [Sequence Doc](docs/flows/recovery-sequence.md) |
-| **Worker Decision Pipeline** | Workflow | [Interactive HTML Flow](docs/flows/html/worker-pipeline.html) | [Pipeline Doc](docs/flows/worker-pipeline.md) |
-| **Payment Lifecycle** | Lifecycle | [Interactive HTML Flow](docs/flows/html/payment-lifecycle.html) | [Lifecycle Doc](docs/flows/payment-lifecycle.md) |
+| **System Architecture** | Architecture | [docs/flows/html/system-architecture.html](docs/flows/html/system-architecture.html) | [`system-architecture.architecture.json`](docs/flows/specs/system-architecture.architecture.json) |
+| **Recovery Sequence** | Sequence | [docs/flows/html/recovery-sequence.html](docs/flows/html/recovery-sequence.html) | [`recovery-sequence.sequence.json`](docs/flows/specs/recovery-sequence.sequence.json) |
+| **Worker Decision Pipeline** | Workflow | [docs/flows/html/worker-pipeline.html](docs/flows/html/worker-pipeline.html) | [`worker-pipeline.workflow.json`](docs/flows/specs/worker-pipeline.workflow.json) |
+| **Payment Recovery Lifecycle** | Lifecycle | [docs/flows/html/payment-lifecycle.html](docs/flows/html/payment-lifecycle.html) | [`payment-lifecycle.lifecycle.json`](docs/flows/specs/payment-lifecycle.lifecycle.json) |
 
 </div>
 
-### Detailed Flow Documentation
-- [Webhook Ingress Flow](docs/flows/webhook-ingress.md) — HMAC verification, raw byte deduplication, sub-second enqueue
+---
+
+### 1️⃣ System Architecture & Trust Boundaries
+
+```mermaid
+flowchart TD
+    subgraph External ["External Services"]
+        RZ["Razorpay Test Mode API"]
+        LLM["Ollama / Cloud LLM (Opt-In)"]
+        OP["Merchant Operator Browser"]
+    end
+
+    subgraph Ingress ["Ingress & Durable State"]
+        ING["Webhook Ingress (HMAC-SHA256)"]
+        DB[("SQLite WAL Database\n(Source of Truth)")]
+    end
+
+    subgraph Core ["Deterministic Decision Engine"]
+        WRK["Recovery Worker (Job Lease)"]
+        RBK["Rulebook Engine (Pure Logic)"]
+        GTK{"Gatekeeper Gate (9 Safety Checks)"}
+        ADP["Effect Adapters (dry_run / rzp_test)"]
+        LDG[("Audit Ledger (Hash-Chained)")]
+    end
+
+    subgraph Advisory ["Isolated Advisory Sandbox"]
+        ADV["Advisory Anti-Corruption Layer"]
+    end
+
+    subgraph Presentation ["Operator Surface"]
+        API["FastAPI Server (:8000)"]
+        UI["React Operator Console (:5173)"]
+    end
+
+    RZ -->|POST /webhooks/razorpay| ING
+    ING -->|Verify & Enqueue| DB
+    ING -->|202 Accepted| RZ
+
+    DB -->|Atomically Lease Job| WRK
+    WRK -->|Classify Reason| RBK
+    
+    RBK -.->|Sanitized Context| ADV
+    ADV -.->|Opt-In Request| LLM
+    LLM -.->|Draft Annotation Only| ADV
+    ADV -.->|Subordinate Advice| DB
+
+    RBK -->|Proposed Action| GTK
+    GTK -->|Approved Action Intent| ADP
+    ADP -->|Seal Cryptographic Entry| LDG
+    ADP -.->|Dry Run / Test API Call| RZ
+
+    DB -->|Read-Only Queries| API
+    API -->|Live REST API| UI
+    UI -->|Render Dashboards| OP
+```
+
+---
+
+### 2️⃣ End-to-End Recovery Sequence
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant RZ as Razorpay API
+    participant ING as Webhook Ingress
+    participant DB as SQLite WAL Store
+    participant WRK as Recovery Worker
+    participant RBK as Rulebook Engine
+    participant GTK as Gatekeeper Gate
+    participant ADP as Effect Adapter
+    participant LDG as Audit Ledger
+
+    Note over RZ,ING: Webhook Fast Path (< 15ms)
+    RZ->>ING: POST /webhooks/razorpay (payment.failed + HMAC)
+    ING->>ING: Verify HMAC signature over raw payload bytes
+    ING->>DB: INSERT event + job (ON CONFLICT DO NOTHING)
+    DB-->>ING: Acknowledged (first delivery or duplicate)
+    ING-->>RZ: 202 Accepted
+
+    Note over WRK,RBK: Deterministic Decision Pipeline
+    WRK->>DB: Atomically lease next queued job (SET state=leased)
+    WRK->>RBK: Classify reason code & evaluate policy
+    RBK-->>WRK: PolicyDecision (allowed action set + retry delay)
+    
+    Note over WRK,GTK: Safety Verification (9 Invariants)
+    WRK->>GTK: Validate proposed action against fresh stored facts
+    GTK-->>WRK: Approve or Reject (all 9 checks recorded)
+
+    Note over WRK,LDG: Execution & Audit Ledger Sealing
+    WRK->>DB: BEGIN TX: Record decision, intent & state mutation
+    WRK->>ADP: Execute intent with deterministic idempotency key
+    ADP-->>WRK: Effect execution result (dry_run / rzp_test)
+    WRK->>LDG: Append hash-chained audit entry (prev_hash -> entry_hash)
+```
+
+---
+
+### 3️⃣ Worker Decision Pipeline DAG
+
+```mermaid
+flowchart TD
+    START(["Worker Loop Iteration"]) --> LEASE["Atomically Lease Next Queued Job\n(SET state=leased)"]
+    LEASE --> READ["Read Stored Event & Payment State"]
+    
+    subgraph Triage ["Reason Code Triage"]
+        READ --> CLASSIFY{"Reason Code in\nApproved Map?"}
+        CLASSIFY -->|"Known / Mapped"| MAP["Assign Class (A / B / C)"]
+        CLASSIFY -->|"Risk / Fraud / Unknown"| STOP["Assign Class D (Hard Stop)"]
+    end
+
+    subgraph Policy ["Rulebook Engine (Pure Function)"]
+        MAP --> EVAL["decide(state, class, policy, now)"]
+        STOP --> EVAL
+        EVAL --> DECISION["PolicyDecision:\n• Action: retry / link / stop\n• Allowed action set\n• Next eligible time"]
+    end
+
+    subgraph SafetyGate ["Gatekeeper Verification"]
+        DECISION --> GATE{"Independent\n9-Check Verification"}
+        GATE -->|"All Checks Pass"| APPROVED["Authorized Action Intent"]
+        GATE -->|"Invariant Violation"| REJECTED["Operator Escalation (No Action)"]
+    end
+
+    subgraph Commit ["Transaction & Audit Sealing"]
+        APPROVED --> TX["BEGIN IMMEDIATE TRANSACTION\n• INSERT decision & gate checks\n• INSERT unique effect intent\n• UPDATE payment state\n• COMMIT"]
+        REJECTED --> TX
+        TX --> ADAPT["Execute via Effect Adapter\n(dry_run or rzp_test)"]
+        ADAPT --> SEAL["Append SHA-256 Chained Entry to Audit Ledger"]
+    end
+
+    SEAL --> DONE(["Job Marked Completed"])
+```
+
+---
+
+### 4️⃣ Payment Recovery Lifecycle State Machine
+
+```mermaid
+stateDiagram-v2
+    [*] --> Queued: Webhook HMAC verified (202 Accepted)
+    Queued --> Triaging: Worker claims job lease
+    
+    state Triaging {
+        [*] --> ClassifyReason
+        ClassifyReason --> ClassA: Gateway Timeout / Network
+        ClassifyReason --> ClassB: Insufficient Balance / Limits
+        ClassifyReason --> ClassC: Card Expired / Auth Error
+        ClassifyReason --> ClassD: Stolen Card / Suspected Fraud
+    }
+    
+    ClassA --> Gating: Proposed Exponential Retry
+    ClassB --> Gating: Proposed Delayed Retry
+    ClassC --> Gating: Proposed Alt Payment Link
+    ClassD --> HardStopped: Immediate Deterministic Stop
+    
+    state Gating {
+        [*] --> InvariantChecks
+        InvariantChecks --> Approved: 9 Checks Passed
+        InvariantChecks --> Rejected: Cap Reached / Cooldown Active
+    }
+    
+    Approved --> RetryScheduled: Class A / B
+    Approved --> AltLinkCreated: Class C
+    Rejected --> HardStopped: Human Review Required
+    
+    RetryScheduled --> Recovered: payment.captured confirmed
+    RetryScheduled --> HardStopped: Max Attempt Cap Exhausted
+    AltLinkCreated --> Recovered: Customer Paid via Link
+    AltLinkCreated --> HardStopped: Payment Link Expired
+    
+    Recovered --> [*]
+    HardStopped --> [*]
+```
+
+---
+
+### 📚 Detailed Markdown Flow Guides
+- [System Architecture Flow](docs/flows/system-architecture.md) — Comprehensive architecture specification
+- [End-to-End Recovery Sequence](docs/flows/recovery-sequence.md) — Detailed sequence diagram & timeline
+- [Worker Decision Pipeline](docs/flows/worker-pipeline.md) — Complete decision DAG documentation
+- [Payment Recovery Lifecycle](docs/flows/payment-lifecycle.md) — State machine transitions & recovery classes
+- [Webhook Ingress Flow](docs/flows/webhook-ingress.md) — HMAC verification & raw byte deduplication
 - [Gatekeeper Safety Checks](docs/flows/gatekeeper-checks.md) — The 9 independent safety invariants
-- [Triage & Decision Engine](docs/flows/triage-decision.md) — Deterministic mapping and rulebook evaluation
-- [Evaluation & Benchmark Pipeline](docs/flows/evaluation-flow.md) — 500-scenario Monte Carlo benchmark harness
-- [Connected Simulator Flow](docs/flows/simulator-flow.md) — Real Razorpay Test Mode + Ollama Cloud integration
+- [Triage & Decision Engine](docs/flows/triage-decision.md) — Deterministic reason mapping & rulebook evaluation
+- [Evaluation & Benchmark Pipeline](docs/flows/evaluation-flow.md) — 500-scenario Monte Carlo benchmark engine
+- [Connected Simulator Flow](docs/flows/simulator-flow.md) — Real Razorpay Test Mode + Ollama Cloud connected loop
 - [Audit Ledger & Tamper Proofs](docs/flows/audit-ledger.md) — SHA-256 cryptographic hash-chaining
-- [Complete Data Model](docs/flows/data-model.md) — SQLite schema, indexes, and state machine transitions
+- [Complete Data Model](docs/flows/data-model.md) — SQLite tables, foreign keys, indexes & schemas
 
 ---
 
