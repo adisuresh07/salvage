@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "diagram_type": "lifecycle",
+  "meta": {
+    "title": "Salvage — Payment Recovery Lifecycle",
+    "output": "docs/flows/html/payment-lifecycle.html",
+    "viewBox": [980, 660],
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "main-lifecycle",
+        "label": "Main recovery path",
+        "focus": ["queued", "triaging", "evaluating", "gating", "recovered"],
+        "note": "Follow the primary lifecycle rail from durable queue to captured recovery."
+      },
+      {
+        "id": "action-branches",
+        "label": "Recovery action branches",
+        "focus": ["gating", "retry_scheduled", "alt_link", "recovered"],
+        "note": "See the automated retry and alternative payment link execution paths."
+      },
+      {
+        "id": "safety-exits",
+        "label": "Terminal safety exits",
+        "focus": ["evaluating", "hard_stopped", "retry_scheduled", "cap_exhausted"],
+        "note": "Class D hard stop and retry cap exhaustion terminate safely without recklessness."
+      }
+    ]
+  },
+  "lanes": [
+    { "id": "main", "label": "Lifecycle phases" },
+    { "id": "waiting", "label": "Recovery actions" },
+    { "id": "terminal", "label": "Terminal exits" }
+  ],
+  "states": [
+    { "id": "queued", "type": "start", "label": "Queued", "sublabel": "webhook intake", "lane": "main", "col": 0, "step": "01", "tag": "entry" },
+    { "id": "triaging", "type": "active", "label": "Triaging", "sublabel": "reason to class", "lane": "main", "col": 1, "step": "02", "tag": "classify" },
+    { "id": "evaluating", "type": "decision", "label": "Evaluating", "sublabel": "rulebook policy", "lane": "main", "col": 2, "step": "03", "tag": "rulebook" },
+    { "id": "gating", "type": "decision", "label": "Gating", "sublabel": "9 safety checks", "lane": "main", "col": 3, "step": "04", "tag": "gatekeeper" },
+    { "id": "recovered", "type": "success", "label": "Recovered", "sublabel": "payment captured", "lane": "main", "col": 4, "step": "05", "tag": "done" },
+    { "id": "retry_scheduled", "type": "waiting", "label": "Retry Scheduled", "sublabel": "Class A/B backoff", "lane": "waiting", "col": 1, "tag": "retry" },
+    { "id": "alt_link", "type": "waiting", "label": "Alt Payment Link", "sublabel": "Class C checkout", "lane": "waiting", "col": 2, "tag": "link" },
+    { "id": "hard_stopped", "type": "failure", "label": "Hard Stopped", "sublabel": "Class D exit", "lane": "terminal", "col": 0, "tag": "terminal" },
+    { "id": "cap_exhausted", "type": "failure", "label": "Cap Exhausted", "sublabel": "max attempts", "lane": "terminal", "col": 1, "tag": "terminal" }
+  ],
+  "transitions": [
+    { "id": "t1", "from": "gating", "to": "retry_scheduled", "variant": "emphasis", "fromSide": "bottom", "toSide": "top", "route": "straight" },
+    { "id": "t2", "from": "evaluating", "to": "hard_stopped", "variant": "security", "fromSide": "bottom", "toSide": "top", "route": "straight" },
+    { "id": "t3", "from": "retry_scheduled", "to": "cap_exhausted", "variant": "security", "fromSide": "bottom", "toSide": "top", "route": "straight" }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Four Distinct Action Classes",
+      "items": [
+        "Class A: Immediate automated retry with exponential backoff",
+        "Class B: Scheduled delay retry for batch/funds settlement",
+        "Class C: Single alternative payment link generated",
+        "Class D: Immediate hard stop with zero automated interaction"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Dual-Layer Safety Invariant",
+      "items": [
+        "Both Rulebook and Gatekeeper enforce maximum retry count",
+        "Replay attacks cannot trigger additional attempts past the cap",
+        "Tamper-evident audit ledger records exact final state"
+      ]
+    }
+  ]
+}

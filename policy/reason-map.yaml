@@ -1,0 +1,52 @@
+version: "2026-08-29.1"
+reasons:
+  gateway_timeout:
+    class: A
+    rationale: The gateway did not complete in time; the instrument is not known to be at fault.
+    source_reference: razorpay-payment-failure-reasons
+    review_state: approved
+  gateway_technical_error:
+    class: A
+    rationale: A transient gateway infrastructure failure may clear after bounded backoff.
+    source_reference: razorpay-payment-failure-reasons
+    review_state: approved
+  bank_technical_error:
+    class: A
+    rationale: A temporary bank-side infrastructure condition may recover later.
+    source_reference: razorpay-payment-failure-reasons
+    review_state: approved
+  insufficient_funds:
+    class: B
+    rationale: Immediate retry is unlikely to help; a later attempt may be appropriate.
+    source_reference: razorpay-payment-failure-reasons
+    review_state: approved
+  balance_insufficient:
+    class: B
+    rationale: Available funds are insufficient at the time of failure.
+    source_reference: razorpay-payment-failure-reasons
+    review_state: approved
+  authentication_failed:
+    class: C
+    rationale: The same rail cannot resolve an authentication problem automatically.
+    source_reference: razorpay-payment-failure-reasons
+    review_state: approved
+  card_expired:
+    class: C
+    rationale: The current instrument is no longer usable; offer a fresh payment path.
+    source_reference: razorpay-payment-failure-reasons
+    review_state: approved
+  incorrect_pin:
+    class: C
+    rationale: Repeating the same attempt cannot safely correct customer authentication.
+    source_reference: razorpay-payment-failure-reasons
+    review_state: approved
+  risk_threshold:
+    class: D
+    rationale: Risk-originated failures require operator review and prohibit automated contact.
+    source_reference: salvage-hard-stop-policy
+    review_state: approved
+  payment_declined:
+    class: D
+    rationale: An ambiguous hard decline must fail closed in the MVP.
+    source_reference: salvage-hard-stop-policy
+    review_state: approved

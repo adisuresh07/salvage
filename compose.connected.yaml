@@ -1,0 +1,29 @@
+services:
+  api:
+    env_file:
+      - .env
+    environment:
+      SALVAGE_SIMULATOR_ENABLED: "true"
+      SALVAGE_SIMULATOR_DATABASE_PATH: /app/data/salvage-simulator.db
+    # Main console stays local; expose only the dedicated ingress for webhooks.
+    ports: !override
+      - "127.0.0.1:8000:8000"
+
+  webhook:
+    image: salvage:local
+    command: ["uvicorn", "salvage.api.webhook_public:app", "--host", "0.0.0.0", "--port", "8002"]
+    env_file:
+      - .env
+    environment:
+      SALVAGE_SIMULATOR_ENABLED: "true"
+      SALVAGE_DATABASE_PATH: /app/data/salvage.db
+      SALVAGE_SIMULATOR_DATABASE_PATH: /app/data/salvage-simulator.db
+    ports:
+      - "127.0.0.1:8002:8002"
+    volumes:
+      - salvage-data:/app/data
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      disable: true

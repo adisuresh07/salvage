@@ -56,7 +56,9 @@ This is a single-context repository with these internal areas:
 - **Execution:** create idempotent effect intents and invoke a test adapter.
 - **Audit:** append decision facts and verify the hash chain.
 - **Evaluation:** compare policies against the same hidden synthetic truth.
-- **Console:** render read-only operational and evaluation views.
+- **Console:** render read-only operational and evaluation views, plus an
+  isolated local synthetic playground defined in ADR-0013.
+  ADR-0014 adds the opt-in connected Test Mode simulator with cloud-only advice.
 
 ## Four action classes
 
@@ -111,6 +113,8 @@ Real in the MVP:
 - Razorpay Test Mode webhooks and explicitly supported test API calls when
   sandbox credentials are supplied;
 - optional model calls when a free/local provider is configured.
+- actual Ollama Cloud explanations and Razorpay Test Mode order/API evidence in
+  the opt-in connected simulator; webhook receipt is tracked independently.
 
 Simulated in the MVP:
 
@@ -146,7 +150,10 @@ and tested with a sensitivity sweep.
 5. The same idempotency key cannot create two effect records.
 6. Amounts are integers in minor units and never enter a model prompt.
 7. Raw webhook bytes are authenticated before parsing.
-8. The read-only console cannot trigger payment effects.
+8. The operator console cannot trigger payment effects. The local playground
+   may create synthetic dry-run intents only in a separate database (ADR-0013).
+   The connected simulator may create original Test Mode checkout orders in its
+   own database (ADR-0014); automated recovery remains dry-run.
 9. A model outage cannot prevent the deterministic pipeline from completing.
 10. Live mode is impossible without an explicit future ADR and separate
     configuration path.

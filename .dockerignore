@@ -1,0 +1,16 @@
+.git
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+.venv
+__pycache__
+.pytest_cache
+.mypy_cache
+.ruff_cache
+console/node_modules
+console/dist
+data
+reports
+*.docx

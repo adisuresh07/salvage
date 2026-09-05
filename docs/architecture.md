@@ -272,12 +272,37 @@ decision hash that excludes non-deterministic operational timestamps.
 
 ### 6.9 Read API and console
 
-The console calls only GET endpoints. No CORS wildcard is needed in the demo
+The operator console calls only GET endpoints. No CORS wildcard is needed in the demo
 profile because FastAPI can serve the static build from the same origin.
 Provider rationale, failure descriptions, and operator fields render as text.
 The console never uses `dangerouslySetInnerHTML`.
 
+The local synthetic playground is a separate ADR-0013 surface. It submits only
+preset failures and synthetic facts to `/demo/v1/runs`, reuses the shared
+pipeline in a separate `*-playground.db`, and displays fresh receipts/history.
+Only demo mode registers these routes; loopback origins and a custom header
+guard POST requests. All effects are dry-run, and cache-only advice is forced.
+Operator data and seeded evaluation results are never changed by a test.
+
 ## 7. Data model
+
+### Connected simulator (ADR-0014)
+
+An opt-in `/simulator/v1` surface creates local synthetic investigations or
+Razorpay Test Mode orders. `simulator_runs` and `simulator_deliveries` live in a
+separate SQLite file alongside the existing decision/queue/audit schema. The
+background worker commits the deterministic decision first, then calls Ollama
+Cloud directly and records a separate advisory ledger entry. Generations have
+stable run URLs and are never silently rerun on replay. No model output feeds
+the execution path; all recovery effects remain dry-run.
+
+`POST /simulator/v1/runs`, `GET /simulator/v1/status`,
+`GET /simulator/v1/runs/{run_id}`, its `/receipt` download, and the explicit
+`POST /simulator/v1/runs/{run_id}/sync` provider check are loopback-only.
+`POST /webhooks/razorpay/test` receives signed failures only for locally created
+orders. The dedicated `salvage.api.webhook_public:app` exposes that route alone
+for temporary tunnelling. Synthetic/API-observed/webhook provenance stays
+distinct. Browser callbacks never establish payment success.
 
 All times are UTC ISO-8601 values in storage/API. Money is integer minor units.
 Foreign keys are enabled. Migrations set WAL mode and a bounded busy timeout.
@@ -352,7 +377,18 @@ Exactly-once network delivery is not claimed.
 - `GET /api/v1/meta/versions`
 
 Pagination is cursor-based. API response schemas are Pydantic models and feed
-the generated TypeScript definitions. Mutation endpoints are out of scope.
+the generated TypeScript definitions. Operator mutation endpoints are out of scope.
+
+### Local synthetic playground (demo mode only)
+
+- `GET /demo/v1/playground` — presets, recent tests, and remaining local capacity.
+- `POST /demo/v1/runs` — create/replay a synthetic event with a UUID and return
+  the real worker decision, per-event record counts, and ledger verification.
+- `GET /demo/v1/runs/{run_id}/receipt` — download stored evidence as JSON;
+  this read does not replay the event or claim a delivery/timing measurement.
+
+The playground is a bounded synchronous local test runner, not the public
+webhook path. It cannot receive real payment IDs, contacts, or credentials.
 
 ## 10. Command-line interface
 

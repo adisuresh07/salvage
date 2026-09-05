@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Salvage evaluation report</title>
+    <style>
+      body { font: 16px system-ui; margin: 0; background: #f3f1e9; color: #102022; }
+      main { max-width: 980px; margin: auto; padding: 48px 24px; }
+      h1 { font-size: 52px; letter-spacing: -.05em; margin: 0 0 8px; }
+      .note { padding: 16px; border-left: 4px solid #f2b544; background: #fff; }
+      table { width: 100%; border-collapse: collapse; margin-top: 32px; background: #fff; }
+      th, td { text-align: left; padding: 14px; border-bottom: 1px solid #ddd; }
+      th { font-size: 12px; text-transform: uppercase; }
+      .safe { color: #07805f; font-weight: 700; }
+      code { font-size: 12px; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Recovery without recklessness.</h1>
+      <p>Seed {{ result.seed }} · {{ result.scenario_count }} synthetic scenarios</p>
+      <p class="note"><strong>Real vs simulated:</strong> {{ result.real_vs_simulated }}</p>
+      <table>
+        <thead><tr><th>Policy</th><th>Recovery</th><th>Attempts</th><th>Wasted</th><th>Class D violations</th></tr></thead>
+        <tbody>
+          {% for policy in result.policies %}
+          <tr>
+            <td><strong>{{ policy.policy }}</strong></td>
+            <td>{{ policy.recovery_rate }}%</td>
+            <td>{{ policy.attempts }}</td>
+            <td>{{ policy.wasted_attempts }}</td>
+            <td class="safe">{{ policy.class_d_violations }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <h2>Sensitivity sweep</h2>
+      <p>The same visible batch is rescored after applying the documented ±30% recovery-probability range.</p>
+      <table>
+        <thead><tr><th>Assumption case</th><th>Multiplier</th><th>Salvage recovery</th><th>Class D violations</th></tr></thead>
+        <tbody>
+          {% for case in result.sensitivity %}
+          {% set salvage = case.policies | selectattr("policy", "equalto", "salvage") | first %}
+          <tr>
+            <td><strong>{{ case.label }}</strong></td>
+            <td>{{ case.probability_multiplier }}</td>
+            <td>{{ salvage.recovery_rate }}%</td>
+            <td class="safe">{{ salvage.class_d_violations }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <p>Batch digest: <code>{{ result.batch_digest }}</code></p>
+    </main>
+  </body>
+</html>

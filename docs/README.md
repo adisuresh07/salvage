@@ -7,16 +7,14 @@ This directory is the maintained source of truth for Salvage.
 1. [`../CONTEXT.md`](../CONTEXT.md) — purpose, scope, actors, and invariants.
 2. [`product-requirements.md`](product-requirements.md) — what the MVP must do.
 3. [`glossary.md`](glossary.md) — canonical project vocabulary.
-4. [`architecture.md`](architecture.md) — components, flows, data, APIs, and
-   trust boundaries.
-5. [`tech-stack.md`](tech-stack.md) — runtime and library decisions.
-6. [`toolstack.md`](toolstack.md) — development, quality, and delivery tools.
-7. [`testing/test-plan.md`](testing/test-plan.md) — test strategy and gates.
-8. [`security/threat-model.md`](security/threat-model.md) — threats and
-   mitigations.
-9. [`plans/mvp-implementation-plan.md`](plans/mvp-implementation-plan.md) —
-   ordered delivery plan.
-10. [`adr.md`](adr.md) and [`adr/`](adr/) — accepted decision history.
+4. [`architecture.md`](architecture.md) — components, flows, data, APIs, and trust boundaries.
+5. [`flows/README.md`](flows/README.md) — interactive Archify showcases and markdown flows.
+6. [`tech-stack.md`](tech-stack.md) — runtime and library decisions.
+7. [`toolstack.md`](toolstack.md) — development, quality, and delivery tools.
+8. [`testing/test-plan.md`](testing/test-plan.md) — test strategy and gates.
+9. [`security/threat-model.md`](security/threat-model.md) — threats and mitigations.
+10. [`plans/mvp-implementation-plan.md`](plans/mvp-implementation-plan.md) — ordered delivery plan.
+11. [`adr.md`](adr.md) and [`adr/`](adr/) — accepted decision history.
 
 ## Authority order
 

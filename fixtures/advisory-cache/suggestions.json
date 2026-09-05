@@ -1,0 +1,13 @@
+{
+  "schema_version": "1",
+  "provider": "reviewed_fixture",
+  "model": "cache-only",
+  "prompt_version": "suggest-class-v1",
+  "entries": {
+    "processor_code_z91": {
+      "suggested_class": "A",
+      "confidence": "low",
+      "rationale": "The code resembles a processor availability condition, but the mapping is unreviewed and must remain a hard stop."
+    }
+  }
+}

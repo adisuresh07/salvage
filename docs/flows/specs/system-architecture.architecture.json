@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Salvage — System Architecture",
+    "output": "docs/flows/html/system-architecture.html",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "webhook-path",
+        "label": "Webhook fast path",
+        "focus": ["razorpay", "ingress", "sqlite", "worker"],
+        "note": "Raw webhook bytes in, signature verified, durable job enqueued, 202 returned."
+      },
+      {
+        "id": "decision-core",
+        "label": "Decision core",
+        "focus": ["worker", "rulebook", "gatekeeper", "adapter", "ledger"],
+        "note": "Deterministic pipeline where every recovery action is authorized before execution."
+      },
+      {
+        "id": "advisory-boundary",
+        "label": "Advisory boundary",
+        "focus": ["rulebook", "advisor", "llm"],
+        "note": "LLM advisory is isolated from execution. Model annotates but has zero action authority."
+      },
+      {
+        "id": "operator-view",
+        "label": "Operator console",
+        "focus": ["sqlite", "api", "console", "operator"],
+        "note": "Read-only surface for decisions, escalations, audit ledger, and evaluation reports."
+      }
+    ]
+  },
+  "components": [
+    { "id": "razorpay", "type": "external", "label": "Razorpay", "sublabel": "Test Mode API", "pos": [40, 160], "size": [130, 60], "tag": "payment.failed" },
+    { "id": "ingress", "type": "backend", "label": "Webhook Ingress", "sublabel": "HMAC-SHA256 Auth", "pos": [230, 160], "size": [130, 60] },
+    { "id": "sqlite", "type": "database", "label": "SQLite Database", "sublabel": "WAL · FK · ACID", "pos": [230, 320], "size": [130, 60], "tag": "Source of Truth" },
+    { "id": "worker", "type": "backend", "label": "Recovery Worker", "sublabel": "Job lease & pipeline", "pos": [420, 160], "size": [130, 60] },
+    { "id": "ledger", "type": "database", "label": "Audit Ledger", "sublabel": "Hash-chained log", "pos": [420, 320], "size": [130, 60], "tag": "Tamper-evident" },
+    { "id": "reviewer", "type": "external", "label": "Evaluator / Judge", "sublabel": "CLI & test harness", "pos": [230, 480], "size": [130, 60] },
+    { "id": "rulebook", "type": "backend", "label": "Rulebook Engine", "sublabel": "Pure deterministic fn", "pos": [610, 60], "size": [130, 55], "tag": "Pure logic" },
+    { "id": "gatekeeper", "type": "security", "label": "Gatekeeper", "sublabel": "9 safety invariants", "pos": [610, 160], "size": [130, 55], "tag": "Hard stop gate" },
+    { "id": "adapter", "type": "backend", "label": "Effect Adapters", "sublabel": "dry_run · rzp_test", "pos": [610, 260], "size": [130, 55] },
+    { "id": "api", "type": "backend", "label": "Read-Only API", "sublabel": "FastAPI :8000", "pos": [610, 380], "size": [130, 55] },
+    { "id": "advisor", "type": "security", "label": "Advisory Layer", "sublabel": "Anti-corruption schema", "pos": [800, 60], "size": [130, 55], "tag": "Annotation only" },
+    { "id": "llm", "type": "cloud", "label": "Model Provider", "sublabel": "Ollama / Cloud (opt-in)", "pos": [800, 160], "size": [130, 55], "tag": "Advisory only" },
+    { "id": "console", "type": "frontend", "label": "React Console", "sublabel": "Vite :5173", "pos": [800, 380], "size": [130, 55] },
+    { "id": "operator", "type": "external", "label": "Merchant Operator", "sublabel": "Browser dashboard", "pos": [800, 480], "size": [130, 55] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Salvage Recovery System", "wraps": ["ingress", "sqlite", "worker", "ledger", "rulebook", "gatekeeper", "adapter", "api", "advisor", "console"] },
+    { "kind": "security-group", "label": "Deterministic Core", "wraps": ["rulebook", "gatekeeper", "adapter", "ledger"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "razorpay", "to": "ingress", "label": "webhook", "variant": "emphasis" },
+    { "id": "c2", "from": "ingress", "to": "sqlite" },
+    { "id": "c3", "from": "ingress", "to": "worker", "label": "enqueue" },
+    { "id": "c4", "from": "worker", "to": "rulebook" },
+    { "id": "c5", "from": "rulebook", "to": "advisor" },
+    { "id": "c6", "from": "advisor", "to": "llm", "variant": "dashed" },
+    { "id": "c7", "from": "rulebook", "to": "gatekeeper" },
+    { "id": "c8", "from": "gatekeeper", "to": "adapter" },
+    { "id": "c9", "from": "adapter", "to": "ledger" },
+    { "id": "c10", "from": "ledger", "to": "sqlite" },
+    { "id": "c11", "from": "sqlite", "to": "api" },
+    { "id": "c12", "from": "api", "to": "console" },
+    { "id": "c13", "from": "console", "to": "operator" },
+    { "id": "c14", "from": "reviewer", "to": "sqlite", "variant": "dashed" }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Fast Ingress & Storage",
+      "items": [
+        "HMAC-SHA256 signature verification at ingress",
+        "Raw payload and durable job stored in single transaction",
+        "Immediate 202 Accepted response to Razorpay"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Safety & Gatekeeper",
+      "items": [
+        "9 independent checks enforced before any effect",
+        "Class D hard stop on fraud, stolen card, or merchant closed",
+        "Tamper-evident SHA-256 hash-chained audit ledger"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Advisory Isolation",
+      "items": [
+        "LLM advisory runs in shadow mode with zero action authority",
+        "Strict anti-corruption schema validates model output",
+        "System functions 100% identically if model is offline"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+version: "2026-08-29.1"
+currency: INR
+classes:
+  A:
+    attempt_cap: 3
+    cooldown_seconds: 720
+    contact_cap: 0
+  B:
+    attempt_cap: 2
+    cooldown_seconds: 43200
+    contact_cap: 1
+  C:
+    attempt_cap: 0
+    cooldown_seconds: 0
+    contact_cap: 1
+  D:
+    attempt_cap: 0
+    cooldown_seconds: 0
+    contact_cap: 0
+global:
+  customer_contact_window_cap: 1
+  adapter_capabilities:
+    - schedule_retry
+    - schedule_later_retry
+    - create_payment_link
+    - queue_customer_message
+    - escalate_review

@@ -1,0 +1,91 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Salvage — Worker Decision Pipeline",
+    "output": "docs/flows/html/worker-pipeline.html",
+    "animation": "trace",
+    "visual_preset": "signal-flow",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "happy-path",
+        "label": "Happy path — Class A/B recovery",
+        "focus": ["lease", "read_state", "triage_node", "rulebook", "gatekeeper", "intent", "adapter", "ledger"],
+        "note": "Transient failure triaged, rulebook calculates policy, gatekeeper approves, effect executed, ledger sealed."
+      },
+      {
+        "id": "hard-stop",
+        "label": "Hard stop — Class D",
+        "focus": ["lease", "read_state", "triage_node", "escalation"],
+        "note": "Risk-originated or unmapped error triggers immediate Class D hard stop without retry or contact."
+      },
+      {
+        "id": "advisory-path",
+        "label": "Advisory path (opt-in)",
+        "focus": ["rulebook", "advisor", "gatekeeper"],
+        "note": "Model advice is requested in shadow mode for annotation only without execution authority."
+      }
+    ]
+  },
+  "lanes": [
+    { "id": "queue", "label": "Queue & Intake" },
+    { "id": "triage", "label": "Reason Triage" },
+    { "id": "decision", "label": "Rulebook & Gatekeeper" },
+    { "id": "effects", "label": "Effects & Audit", "variant": "exception" }
+  ],
+  "phases": [
+    { "id": "claim", "label": "Intake & Lease", "fromCol": 0, "toCol": 1 },
+    { "id": "evaluate", "label": "Policy & Gating", "fromCol": 2, "toCol": 3, "variant": "emphasis" },
+    { "id": "commit", "label": "Execute & Ledger", "fromCol": 4, "toCol": 5, "variant": "dashed" }
+  ],
+  "groups": [
+    { "id": "intake_group", "label": "Intake pipeline", "lane": "queue", "fromCol": 0, "toCol": 1 },
+    { "id": "policy_group", "label": "Deterministic decision", "lane": "decision", "fromCol": 2, "toCol": 4, "variant": "emphasis" },
+    { "id": "effect_group", "label": "Execution & seal", "lane": "effects", "fromCol": 4, "toCol": 5, "variant": "dashed" }
+  ],
+  "mainPath": ["lease", "read_state", "triage_node", "rulebook", "gatekeeper", "intent", "adapter", "ledger"],
+  "nodes": [
+    { "id": "lease", "lane": "queue", "col": 0, "type": "backend", "label": "Atomic Lease", "sublabel": "SET state=leased", "width": 135 },
+    { "id": "read_state", "lane": "queue", "col": 1, "type": "database", "label": "Read State", "sublabel": "events & payment_state", "width": 135 },
+    { "id": "triage_node", "lane": "triage", "col": 2, "type": "backend", "label": "Reason Triage", "sublabel": "reason-map.yaml", "tag": "A/B/C/D class", "width": 135 },
+    { "id": "escalation", "lane": "effects", "col": 2, "type": "security", "label": "Hard Stop Exit", "sublabel": "no retry, no contact", "tag": "Class D", "width": 135 },
+    { "id": "rulebook", "lane": "decision", "col": 3, "type": "backend", "label": "Rulebook Engine", "sublabel": "pure policy function", "tag": "no I/O", "width": 135 },
+    { "id": "advisor", "lane": "triage", "col": 3, "type": "cloud", "label": "Advisory Shadow", "sublabel": "annotation only", "tag": "opt-in", "width": 135 },
+    { "id": "gatekeeper", "lane": "decision", "col": 4, "type": "security", "label": "Gatekeeper", "sublabel": "9 invariant checks", "tag": "safety gate", "width": 135 },
+    { "id": "intent", "lane": "effects", "col": 4, "type": "database", "label": "Record Intent", "sublabel": "atomic TX commit", "width": 135 },
+    { "id": "adapter", "lane": "effects", "col": 5, "type": "backend", "label": "Effect Adapter", "sublabel": "dry_run / rzp_test", "width": 135 },
+    { "id": "ledger", "lane": "decision", "col": 5, "type": "database", "label": "Audit Ledger", "sublabel": "prev_hash to entry_hash", "tag": "tamper-evident", "width": 135 }
+  ],
+  "edges": [
+    { "id": "e1", "from": "lease", "to": "read_state", "variant": "default" },
+    { "id": "e2", "from": "read_state", "to": "triage_node", "variant": "default" },
+    { "id": "e3", "from": "triage_node", "to": "rulebook", "label": "Class A / B / C", "variant": "emphasis" },
+    { "id": "e4", "from": "triage_node", "to": "escalation", "label": "Class D stop", "variant": "security", "role": "error" },
+    { "id": "e5", "from": "rulebook", "to": "advisor", "label": "advice request", "variant": "dashed" },
+    { "id": "e6", "from": "rulebook", "to": "gatekeeper", "label": "proposed action", "variant": "emphasis" },
+    { "id": "e7", "from": "gatekeeper", "to": "intent", "label": "approved", "variant": "emphasis" },
+    { "id": "e8", "from": "intent", "to": "adapter", "variant": "default" },
+    { "id": "e9", "from": "adapter", "to": "ledger", "label": "seal entry", "variant": "emphasis" }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Deterministic Policy Pipeline",
+      "items": [
+        "Rulebook is a pure function taking payment state and returning allowed action set",
+        "Deterministic evaluation guarantees reproducibility across all runs",
+        "Gatekeeper independently verifies all 9 checks before committing effect intent"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Class D Safety Invariant",
+      "items": [
+        "Risk-originated failures (fraud, stolen card) produce immediate Class D",
+        "Zero retry attempts and zero automated contact for all Class D events",
+        "Operator escalation is durable and recorded in audit ledger"
+      ]
+    }
+  ]
+}

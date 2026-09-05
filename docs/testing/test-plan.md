@@ -412,7 +412,27 @@ A release candidate is green only if:
 - sandbox evidence passes or an explicit external blocker/limitation is
   recorded.
 
-## 17. Failure triage
+## 17. Implemented local playground checks (ADR-0013)
+
+`tests/integration/test_playground.py` exercises each preset through real SQLite
+and the worker, replay deduplication, changed-input conflicts, persistent
+history, database isolation, origin/header guards, non-demo route exclusion,
+input validation, and bounded run capacity. `console/src/Playground.test.tsx`
+checks submission, minor-unit conversion, duplicate replay, safe retry after
+uncertain responses, hard stops, and unavailable-backend honesty. These tests
+do not claim a live Razorpay integration or completion of all planned gates.
+
+### Connected simulator checks (ADR-0014)
+
+`tests/integration/test_connected_simulator.py` covers cloud-only HTTP contracts,
+redaction, provider failures, rule invariance, test orders, signed ingress,
+duplicates, local guards, and live-key rejection. Cloud output is saved with
+the run; replay must not cause a second generation or order. UI tests assert
+fresh-versus-unavailable advice and API-versus-webhook provenance.
+Live account checks are manual evidence, not required by offline CI. Do not
+claim that a mocked webhook or reachable tunnel came from Razorpay.
+
+## 18. Failure triage
 
 - Safety invariant failure: stop all other work; fix root cause and add smallest
   regression plus property coverage.

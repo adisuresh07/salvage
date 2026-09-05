@@ -1,0 +1,1144 @@
+{
+  "decisions": {
+    "items": [
+      {
+        "decision_id": "dec_f7992271e8535eb95982",
+        "event_id": "evt_demo_011",
+        "payment_id": "pay_SALVAGE011",
+        "created_at": "2026-08-29T13:00:00Z",
+        "reason": "payment_declined",
+        "effective_class": "D",
+        "advisory_class": null,
+        "known_reason": true,
+        "review_required": true,
+        "triage_rationale": "An ambiguous hard decline must fail closed in the MVP.",
+        "selected_action": "escalate_review",
+        "next_eligible_at": null,
+        "reason_map_fingerprint": "cd6bd426dbf753b4e267d0fbfed4e52ad6c05082f2a5b0d848237acb92accffa",
+        "policy_version": "2026-08-29.1",
+        "policy_fingerprint": "071b420491e02d0659b2cfbb1217d08769b5e4f709a0e3fa0cdb7b1d12018f31",
+        "decision_hash": "eb0856f69cf80717ba1adb50ad9bf188d78934ed68ba3df40b6cd386faa2deb2",
+        "advisory_rationale": null,
+        "advisory_confidence": null,
+        "advisory_provider": null,
+        "advisory_cache_key": null,
+        "amount_minor": 2199000,
+        "currency": "INR",
+        "method": "card",
+        "idempotency_key": null,
+        "effect_action": null,
+        "effect_state": null,
+        "allowed_actions": [
+          "escalate_review"
+        ],
+        "decision_reasons": [
+          "class_d_hard_stop"
+        ],
+        "gate_checks": [
+          {
+            "name": "allowed_set",
+            "passed": true,
+            "explanation": "Action is in the Rulebook set."
+          },
+          {
+            "name": "attempt_cap",
+            "passed": true,
+            "explanation": "Attempt count remains below the configured cap."
+          },
+          {
+            "name": "capability",
+            "passed": true,
+            "explanation": "The dry-run adapter declares this capability."
+          },
+          {
+            "name": "class_stop",
+            "passed": true,
+            "explanation": "Effective Class D cannot create automated effects."
+          },
+          {
+            "name": "contact_cap",
+            "passed": true,
+            "explanation": "Customer contact stays inside both limits."
+          },
+          {
+            "name": "cooldown",
+            "passed": true,
+            "explanation": "The deterministic cooldown boundary is respected."
+          },
+          {
+            "name": "immutable_money",
+            "passed": true,
+            "explanation": "Amount and currency match stored payment facts."
+          },
+          {
+            "name": "stop_list",
+            "passed": true,
+            "explanation": "No manual stop blocks the action."
+          }
+        ]
+      },
+      {
+        "decision_id": "dec_ea21d197e9304c80ef4a",
+        "event_id": "evt_demo_006",
+        "payment_id": "pay_SALVAGE006",
+        "created_at": "2026-08-29T13:00:00Z",
+        "reason": "card_expired",
+        "effective_class": "C",
+        "advisory_class": null,
+        "known_reason": true,
+        "review_required": false,
+        "triage_rationale": "The current instrument is no longer usable; offer a fresh payment path.",
+        "selected_action": "create_payment_link",
+        "next_eligible_at": null,
+        "reason_map_fingerprint": "cd6bd426dbf753b4e267d0fbfed4e52ad6c05082f2a5b0d848237acb92accffa",
+        "policy_version": "2026-08-29.1",
+        "policy_fingerprint": "071b420491e02d0659b2cfbb1217d08769b5e4f709a0e3fa0cdb7b1d12018f31",
+        "decision_hash": "1043c56b12d01098b5e3301c69a5d762b81e08271b0809eda0914ca6621112ce",
+        "advisory_rationale": null,
+        "advisory_confidence": null,
+        "advisory_provider": null,
+        "advisory_cache_key": null,
+        "amount_minor": 695000,
+        "currency": "INR",
+        "method": "card",
+        "idempotency_key": "cf54ffa10329b14f6d9228aa0d76d28f46c28fbc01caf41cc1b3fa069e1d4c6c",
+        "effect_action": "create_payment_link",
+        "effect_state": "dry_run",
+        "allowed_actions": [
+          "create_payment_link",
+          "stop"
+        ],
+        "decision_reasons": [
+          "alternative_payment_path"
+        ],
+        "gate_checks": [
+          {
+            "name": "allowed_set",
+            "passed": true,
+            "explanation": "Action is in the Rulebook set."
+          },
+          {
+            "name": "attempt_cap",
+            "passed": true,
+            "explanation": "Attempt count remains below the configured cap."
+          },
+          {
+            "name": "capability",
+            "passed": true,
+            "explanation": "The dry-run adapter declares this capability."
+          },
+          {
+            "name": "class_stop",
+            "passed": true,
+            "explanation": "Effective Class D cannot create automated effects."
+          },
+          {
+            "name": "contact_cap",
+            "passed": true,
+            "explanation": "Customer contact stays inside both limits."
+          },
+          {
+            "name": "cooldown",
+            "passed": true,
+            "explanation": "The deterministic cooldown boundary is respected."
+          },
+          {
+            "name": "immutable_money",
+            "passed": true,
+            "explanation": "Amount and currency match stored payment facts."
+          },
+          {
+            "name": "stop_list",
+            "passed": true,
+            "explanation": "No manual stop blocks the action."
+          }
+        ]
+      },
+      {
+        "decision_id": "dec_b30890d9d52888b7324b",
+        "event_id": "evt_demo_001",
+        "payment_id": "pay_SALVAGE001",
+        "created_at": "2026-08-29T13:00:00Z",
+        "reason": "gateway_timeout",
+        "effective_class": "A",
+        "advisory_class": null,
+        "known_reason": true,
+        "review_required": false,
+        "triage_rationale": "The gateway did not complete in time; the instrument is not known to be at fault.",
+        "selected_action": "schedule_retry",
+        "next_eligible_at": "2026-08-29T13:00:00Z",
+        "reason_map_fingerprint": "cd6bd426dbf753b4e267d0fbfed4e52ad6c05082f2a5b0d848237acb92accffa",
+        "policy_version": "2026-08-29.1",
+        "policy_fingerprint": "071b420491e02d0659b2cfbb1217d08769b5e4f709a0e3fa0cdb7b1d12018f31",
+        "decision_hash": "cc0fab4c7969abbc8737a0fc2d53e0dc9e6cdf70db6b73b064aa483805fde0d9",
+        "advisory_rationale": null,
+        "advisory_confidence": null,
+        "advisory_provider": null,
+        "advisory_cache_key": null,
+        "amount_minor": 1240000,
+        "currency": "INR",
+        "method": "card",
+        "idempotency_key": "7d59aad4fbea0f724b133638560a27778b713155449e6045fc3ce7720cc9b836",
+        "effect_action": "schedule_retry",
+        "effect_state": "dry_run",
+        "allowed_actions": [
+          "schedule_retry",
+          "stop"
+        ],
+        "decision_reasons": [
+          "bounded_transient_retry"
+        ],
+        "gate_checks": [
+          {
+            "name": "allowed_set",
+            "passed": true,
+            "explanation": "Action is in the Rulebook set."
+          },
+          {
+            "name": "attempt_cap",
+            "passed": true,
+            "explanation": "Attempt count remains below the configured cap."
+          },
+          {
+            "name": "capability",
+            "passed": true,
+            "explanation": "The dry-run adapter declares this capability."
+          },
+          {
+            "name": "class_stop",
+            "passed": true,
+            "explanation": "Effective Class D cannot create automated effects."
+          },
+          {
+            "name": "contact_cap",
+            "passed": true,
+            "explanation": "Customer contact stays inside both limits."
+          },
+          {
+            "name": "cooldown",
+            "passed": true,
+            "explanation": "The deterministic cooldown boundary is respected."
+          },
+          {
+            "name": "immutable_money",
+            "passed": true,
+            "explanation": "Amount and currency match stored payment facts."
+          },
+          {
+            "name": "stop_list",
+            "passed": true,
+            "explanation": "No manual stop blocks the action."
+          }
+        ]
+      },
+      {
+        "decision_id": "dec_aca4eef6662ab76e6e25",
+        "event_id": "evt_demo_009",
+        "payment_id": "pay_SALVAGE009",
+        "created_at": "2026-08-29T13:00:00Z",
+        "reason": "balance_insufficient",
+        "effective_class": "B",
+        "advisory_class": null,
+        "known_reason": true,
+        "review_required": false,
+        "triage_rationale": "Available funds are insufficient at the time of failure.",
+        "selected_action": "schedule_later_retry",
+        "next_eligible_at": "2026-08-30T01:00:00Z",
+        "reason_map_fingerprint": "cd6bd426dbf753b4e267d0fbfed4e52ad6c05082f2a5b0d848237acb92accffa",
+        "policy_version": "2026-08-29.1",
+        "policy_fingerprint": "071b420491e02d0659b2cfbb1217d08769b5e4f709a0e3fa0cdb7b1d12018f31",
+        "decision_hash": "238aeab950fa29482bef509f4d401ffa7016971e1155e2a86d4690993a06aa54",
+        "advisory_rationale": null,
+        "advisory_confidence": null,
+        "advisory_provider": null,
+        "advisory_cache_key": null,
+        "amount_minor": 537000,
+        "currency": "INR",
+        "method": "upi",
+        "idempotency_key": "30a562bf332b60da0cff18c1be7354b5acfff93e6026430d810a9cc9c2f366a9",
+        "effect_action": "schedule_later_retry",
+        "effect_state": "dry_run",
+        "allowed_actions": [
+          "schedule_later_retry",
+          "stop"
+        ],
+        "decision_reasons": [
+          "funds_cooldown_scheduled"
+        ],
+        "gate_checks": [
+          {
+            "name": "allowed_set",
+            "passed": true,
+            "explanation": "Action is in the Rulebook set."
+          },
+          {
+            "name": "attempt_cap",
+            "passed": true,
+            "explanation": "Attempt count remains below the configured cap."
+          },
+          {
+            "name": "capability",
+            "passed": true,
+            "explanation": "The dry-run adapter declares this capability."
+          },
+          {
+            "name": "class_stop",
+            "passed": true,
+            "explanation": "Effective Class D cannot create automated effects."
+          },
+          {
+            "name": "contact_cap",
+            "passed": true,
+            "explanation": "Customer contact stays inside both limits."
+          },
+          {
+            "name": "cooldown",
+            "passed": true,
+            "explanation": "The deterministic cooldown boundary is respected."
+          },
+          {
+            "name": "immutable_money",
+            "passed": true,
+            "explanation": "Amount and currency match stored payment facts."
+          },
+          {
+            "name": "stop_list",
+            "passed": true,
+            "explanation": "No manual stop blocks the action."
+          }
+        ]
+      },
+      {
+        "decision_id": "dec_73882e168c7ee3255cfc",
+        "event_id": "evt_demo_007",
+        "payment_id": "pay_SALVAGE007",
+        "created_at": "2026-08-29T13:00:00Z",
+        "reason": "processor_code_z91",
+        "effective_class": "D",
+        "advisory_class": "A",
+        "known_reason": false,
+        "review_required": true,
+        "triage_rationale": "Unknown reason failed closed to operator review.",
+        "selected_action": "escalate_review",
+        "next_eligible_at": null,
+        "reason_map_fingerprint": "cd6bd426dbf753b4e267d0fbfed4e52ad6c05082f2a5b0d848237acb92accffa",
+        "policy_version": "2026-08-29.1",
+        "policy_fingerprint": "071b420491e02d0659b2cfbb1217d08769b5e4f709a0e3fa0cdb7b1d12018f31",
+        "decision_hash": "22f751758e4972f443bf9cbcb40e528afe7ac5e7d5908a1c0ee36edfd5b28a9b",
+        "advisory_rationale": "The code resembles a processor availability condition, but the mapping is unreviewed and must remain a hard stop.",
+        "advisory_confidence": "low",
+        "advisory_provider": "reviewed_fixture",
+        "advisory_cache_key": "8c64d70a50d293bdc7414d53bee3b9cf6ffb646864b12f83843bf51a6ecae89d",
+        "amount_minor": 1830000,
+        "currency": "INR",
+        "method": "upi",
+        "idempotency_key": null,
+        "effect_action": null,
+        "effect_state": null,
+        "allowed_actions": [
+          "escalate_review"
+        ],
+        "decision_reasons": [
+          "class_d_hard_stop"
+        ],
+        "gate_checks": [
+          {
+            "name": "allowed_set",
+            "passed": true,
+            "explanation": "Action is in the Rulebook set."
+          },
+          {
+            "name": "attempt_cap",
+            "passed": true,
+            "explanation": "Attempt count remains below the configured cap."
+          },
+          {
+            "name": "capability",
+            "passed": true,
+            "explanation": "The dry-run adapter declares this capability."
+          },
+          {
+            "name": "class_stop",
+            "passed": true,
+            "explanation": "Effective Class D cannot create automated effects."
+          },
+          {
+            "name": "contact_cap",
+            "passed": true,
+            "explanation": "Customer contact stays inside both limits."
+          },
+          {
+            "name": "cooldown",
+            "passed": true,
+            "explanation": "The deterministic cooldown boundary is respected."
+          },
+          {
+            "name": "immutable_money",
+            "passed": true,
+            "explanation": "Amount and currency match stored payment facts."
+          },
+          {
+            "name": "stop_list",
+            "passed": true,
+            "explanation": "No manual stop blocks the action."
+          }
+        ]
+      },
+      {
+        "decision_id": "dec_706fc15afabe43fa5592",
+        "event_id": "evt_demo_004",
+        "payment_id": "pay_SALVAGE004",
+        "created_at": "2026-08-29T13:00:00Z",
+        "reason": "risk_threshold",
+        "effective_class": "D",
+        "advisory_class": null,
+        "known_reason": true,
+        "review_required": true,
+        "triage_rationale": "Risk-originated failures are a deterministic hard stop.",
+        "selected_action": "escalate_review",
+        "next_eligible_at": null,
+        "reason_map_fingerprint": "cd6bd426dbf753b4e267d0fbfed4e52ad6c05082f2a5b0d848237acb92accffa",
+        "policy_version": "2026-08-29.1",
+        "policy_fingerprint": "071b420491e02d0659b2cfbb1217d08769b5e4f709a0e3fa0cdb7b1d12018f31",
+        "decision_hash": "2eeefad46e65d924a54a2bc13e8bc579a9c536867ed47236f23f61fa228c5e12",
+        "advisory_rationale": null,
+        "advisory_confidence": null,
+        "advisory_provider": null,
+        "advisory_cache_key": null,
+        "amount_minor": 4200000,
+        "currency": "INR",
+        "method": "card",
+        "idempotency_key": null,
+        "effect_action": null,
+        "effect_state": null,
+        "allowed_actions": [
+          "escalate_review"
+        ],
+        "decision_reasons": [
+          "class_d_hard_stop"
+        ],
+        "gate_checks": [
+          {
+            "name": "allowed_set",
+            "passed": true,
+            "explanation": "Action is in the Rulebook set."
+          },
+          {
+            "name": "attempt_cap",
+            "passed": true,
+            "explanation": "Attempt count remains below the configured cap."
+          },
+          {
+            "name": "capability",
+            "passed": true,
+            "explanation": "The dry-run adapter declares this capability."
+          },
+          {
+            "name": "class_stop",
+            "passed": true,
+            "explanation": "Effective Class D cannot create automated effects."
+          },
+          {
+            "name": "contact_cap",
+            "passed": true,
+            "explanation": "Customer contact stays inside both limits."
+          },
+          {
+            "name": "cooldown",
+            "passed": true,
+            "explanation": "The deterministic cooldown boundary is respected."
+          },
+          {
+            "name": "immutable_money",
+            "passed": true,
+            "explanation": "Amount and currency match stored payment facts."
+          },
+          {
+            "name": "stop_list",
+            "passed": true,
+            "explanation": "No manual stop blocks the action."
+          }
+        ]
+      },
+      {
+        "decision_id": "dec_5bd1ee2a661f92f7bee8",
+        "event_id": "evt_demo_012",
+        "payment_id": "pay_SALVAGE012",
+        "created_at": "2026-08-29T13:00:00Z",
+        "reason": "gateway_timeout",
+        "effective_class": "A",
+        "advisory_class": null,
+        "known_reason": true,
+        "review_required": false,
+        "triage_rationale": "The gateway did not complete in time; the instrument is not known to be at fault.",
+        "selected_action": "schedule_retry",
+        "next_eligible_at": "2026-08-29T13:00:00Z",
+        "reason_map_fingerprint": "cd6bd426dbf753b4e267d0fbfed4e52ad6c05082f2a5b0d848237acb92accffa",
+        "policy_version": "2026-08-29.1",
+        "policy_fingerprint": "071b420491e02d0659b2cfbb1217d08769b5e4f709a0e3fa0cdb7b1d12018f31",
+        "decision_hash": "7d45a11171b0961cedd55dd208ce1d063faeb1317633110fd0c4281aef3077ad",
+        "advisory_rationale": null,
+        "advisory_confidence": null,
+        "advisory_provider": null,
+        "advisory_cache_key": null,
+        "amount_minor": 745000,
+        "currency": "INR",
+        "method": "upi",
+        "idempotency_key": "8e31e3e48b32211275cecd5faa4f7e06c5b14982d41999aca9eb8b7959ae8297",
+        "effect_action": "schedule_retry",
+        "effect_state": "dry_run",
+        "allowed_actions": [
+          "schedule_retry",
+          "stop"
+        ],
+        "decision_reasons": [
+          "bounded_transient_retry"
+        ],
+        "gate_checks": [
+          {
+            "name": "allowed_set",
+            "passed": true,
+            "explanation": "Action is in the Rulebook set."
+          },
+          {
+            "name": "attempt_cap",
+            "passed": true,
+            "explanation": "Attempt count remains below the configured cap."
+          },
+          {
+            "name": "capability",
+            "passed": true,
+            "explanation": "The dry-run adapter declares this capability."
+          },
+          {
+            "name": "class_stop",
+            "passed": true,
+            "explanation": "Effective Class D cannot create automated effects."
+          },
+          {
+            "name": "contact_cap",
+            "passed": true,
+            "explanation": "Customer contact stays inside both limits."
+          },
+          {
+            "name": "cooldown",
+            "passed": true,
+            "explanation": "The deterministic cooldown boundary is respected."
+          },
+          {
+            "name": "immutable_money",
+            "passed": true,
+            "explanation": "Amount and currency match stored payment facts."
+          },
+          {
+            "name": "stop_list",
+            "passed": true,
+            "explanation": "No manual stop blocks the action."
+          }
+        ]
+      },
+      {
+        "decision_id": "dec_58aa3c84160e3c203b05",
+        "event_id": "evt_demo_003",
+        "payment_id": "pay_SALVAGE003",
+        "created_at": "2026-08-29T13:00:00Z",
+        "reason": "authentication_failed",
+        "effective_class": "C",
+        "advisory_class": null,
+        "known_reason": true,
+        "review_required": false,
+        "triage_rationale": "The same rail cannot resolve an authentication problem automatically.",
+        "selected_action": "create_payment_link",
+        "next_eligible_at": null,
+        "reason_map_fingerprint": "cd6bd426dbf753b4e267d0fbfed4e52ad6c05082f2a5b0d848237acb92accffa",
+        "policy_version": "2026-08-29.1",
+        "policy_fingerprint": "071b420491e02d0659b2cfbb1217d08769b5e4f709a0e3fa0cdb7b1d12018f31",
+        "decision_hash": "a679e01af10870e2b4821c8add25d132dc8761c75a2dc06fcfa103c9d9ced3fe",
+        "advisory_rationale": null,
+        "advisory_confidence": null,
+        "advisory_provider": null,
+        "advisory_cache_key": null,
+        "amount_minor": 2490000,
+        "currency": "INR",
+        "method": "card",
+        "idempotency_key": "97b5b56ad0585e0aeab4e24c7c09e956b2735d6e0c049dcd9bf02a5a678d967b",
+        "effect_action": "create_payment_link",
+        "effect_state": "dry_run",
+        "allowed_actions": [
+          "create_payment_link",
+          "stop"
+        ],
+        "decision_reasons": [
+          "alternative_payment_path"
+        ],
+        "gate_checks": [
+          {
+            "name": "allowed_set",
+            "passed": true,
+            "explanation": "Action is in the Rulebook set."
+          },
+          {
+            "name": "attempt_cap",
+            "passed": true,
+            "explanation": "Attempt count remains below the configured cap."
+          },
+          {
+            "name": "capability",
+            "passed": true,
+            "explanation": "The dry-run adapter declares this capability."
+          },
+          {
+            "name": "class_stop",
+            "passed": true,
+            "explanation": "Effective Class D cannot create automated effects."
+          },
+          {
+            "name": "contact_cap",
+            "passed": true,
+            "explanation": "Customer contact stays inside both limits."
+          },
+          {
+            "name": "cooldown",
+            "passed": true,
+            "explanation": "The deterministic cooldown boundary is respected."
+          },
+          {
+            "name": "immutable_money",
+            "passed": true,
+            "explanation": "Amount and currency match stored payment facts."
+          },
+          {
+            "name": "stop_list",
+            "passed": true,
+            "explanation": "No manual stop blocks the action."
+          }
+        ]
+      },
+      {
+        "decision_id": "dec_519949244bc15c0a8d01",
+        "event_id": "evt_demo_005",
+        "payment_id": "pay_SALVAGE005",
+        "created_at": "2026-08-29T13:00:00Z",
+        "reason": "bank_technical_error",
+        "effective_class": "A",
+        "advisory_class": null,
+        "known_reason": true,
+        "review_required": false,
+        "triage_rationale": "A temporary bank-side infrastructure condition may recover later.",
+        "selected_action": "schedule_retry",
+        "next_eligible_at": "2026-08-29T13:00:00Z",
+        "reason_map_fingerprint": "cd6bd426dbf753b4e267d0fbfed4e52ad6c05082f2a5b0d848237acb92accffa",
+        "policy_version": "2026-08-29.1",
+        "policy_fingerprint": "071b420491e02d0659b2cfbb1217d08769b5e4f709a0e3fa0cdb7b1d12018f31",
+        "decision_hash": "22ba8719f28d1b948e2130321090410ef16cae67fb684957858d28b46f165857",
+        "advisory_rationale": null,
+        "advisory_confidence": null,
+        "advisory_provider": null,
+        "advisory_cache_key": null,
+        "amount_minor": 1565000,
+        "currency": "INR",
+        "method": "netbanking",
+        "idempotency_key": "776179595734faa6be840668030d10bb12cb322bb53f2cd0c92caa6d40e41ad4",
+        "effect_action": "schedule_retry",
+        "effect_state": "dry_run",
+        "allowed_actions": [
+          "schedule_retry",
+          "stop"
+        ],
+        "decision_reasons": [
+          "bounded_transient_retry"
+        ],
+        "gate_checks": [
+          {
+            "name": "allowed_set",
+            "passed": true,
+            "explanation": "Action is in the Rulebook set."
+          },
+          {
+            "name": "attempt_cap",
+            "passed": true,
+            "explanation": "Attempt count remains below the configured cap."
+          },
+          {
+            "name": "capability",
+            "passed": true,
+            "explanation": "The dry-run adapter declares this capability."
+          },
+          {
+            "name": "class_stop",
+            "passed": true,
+            "explanation": "Effective Class D cannot create automated effects."
+          },
+          {
+            "name": "contact_cap",
+            "passed": true,
+            "explanation": "Customer contact stays inside both limits."
+          },
+          {
+            "name": "cooldown",
+            "passed": true,
+            "explanation": "The deterministic cooldown boundary is respected."
+          },
+          {
+            "name": "immutable_money",
+            "passed": true,
+            "explanation": "Amount and currency match stored payment facts."
+          },
+          {
+            "name": "stop_list",
+            "passed": true,
+            "explanation": "No manual stop blocks the action."
+          }
+        ]
+      },
+      {
+        "decision_id": "dec_3ee78ded9e83a684689a",
+        "event_id": "evt_demo_010",
+        "payment_id": "pay_SALVAGE010",
+        "created_at": "2026-08-29T13:00:00Z",
+        "reason": "incorrect_pin",
+        "effective_class": "C",
+        "advisory_class": null,
+        "known_reason": true,
+        "review_required": false,
+        "triage_rationale": "Repeating the same attempt cannot safely correct customer authentication.",
+        "selected_action": "create_payment_link",
+        "next_eligible_at": null,
+        "reason_map_fingerprint": "cd6bd426dbf753b4e267d0fbfed4e52ad6c05082f2a5b0d848237acb92accffa",
+        "policy_version": "2026-08-29.1",
+        "policy_fingerprint": "071b420491e02d0659b2cfbb1217d08769b5e4f709a0e3fa0cdb7b1d12018f31",
+        "decision_hash": "00a771e72217570a2079dc29bae5bae54e99e9859b3084272504e245d068065b",
+        "advisory_rationale": null,
+        "advisory_confidence": null,
+        "advisory_provider": null,
+        "advisory_cache_key": null,
+        "amount_minor": 1285000,
+        "currency": "INR",
+        "method": "card",
+        "idempotency_key": "78709827efe28922735d2a50de8fc914ed21b5ef5dcdb209faf6daec2ed036ce",
+        "effect_action": "create_payment_link",
+        "effect_state": "dry_run",
+        "allowed_actions": [
+          "create_payment_link",
+          "stop"
+        ],
+        "decision_reasons": [
+          "alternative_payment_path"
+        ],
+        "gate_checks": [
+          {
+            "name": "allowed_set",
+            "passed": true,
+            "explanation": "Action is in the Rulebook set."
+          },
+          {
+            "name": "attempt_cap",
+            "passed": true,
+            "explanation": "Attempt count remains below the configured cap."
+          },
+          {
+            "name": "capability",
+            "passed": true,
+            "explanation": "The dry-run adapter declares this capability."
+          },
+          {
+            "name": "class_stop",
+            "passed": true,
+            "explanation": "Effective Class D cannot create automated effects."
+          },
+          {
+            "name": "contact_cap",
+            "passed": true,
+            "explanation": "Customer contact stays inside both limits."
+          },
+          {
+            "name": "cooldown",
+            "passed": true,
+            "explanation": "The deterministic cooldown boundary is respected."
+          },
+          {
+            "name": "immutable_money",
+            "passed": true,
+            "explanation": "Amount and currency match stored payment facts."
+          },
+          {
+            "name": "stop_list",
+            "passed": true,
+            "explanation": "No manual stop blocks the action."
+          }
+        ]
+      },
+      {
+        "decision_id": "dec_260d876b0a0bab01710a",
+        "event_id": "evt_demo_008",
+        "payment_id": "pay_SALVAGE008",
+        "created_at": "2026-08-29T13:00:00Z",
+        "reason": "gateway_technical_error",
+        "effective_class": "A",
+        "advisory_class": null,
+        "known_reason": true,
+        "review_required": false,
+        "triage_rationale": "A transient gateway infrastructure failure may clear after bounded backoff.",
+        "selected_action": "schedule_retry",
+        "next_eligible_at": "2026-08-29T13:00:00Z",
+        "reason_map_fingerprint": "cd6bd426dbf753b4e267d0fbfed4e52ad6c05082f2a5b0d848237acb92accffa",
+        "policy_version": "2026-08-29.1",
+        "policy_fingerprint": "071b420491e02d0659b2cfbb1217d08769b5e4f709a0e3fa0cdb7b1d12018f31",
+        "decision_hash": "7845fe67c576e852db01c2bb1aa299ee8a8539a817cc2adcd6b9e0ce746da7cc",
+        "advisory_rationale": null,
+        "advisory_confidence": null,
+        "advisory_provider": null,
+        "advisory_cache_key": null,
+        "amount_minor": 960000,
+        "currency": "INR",
+        "method": "card",
+        "idempotency_key": "4bedd71522c1d8f68ddfeecf39d27c4014dd9b6fe9dc6a6bfe10f38d70b59581",
+        "effect_action": "schedule_retry",
+        "effect_state": "dry_run",
+        "allowed_actions": [
+          "schedule_retry",
+          "stop"
+        ],
+        "decision_reasons": [
+          "bounded_transient_retry"
+        ],
+        "gate_checks": [
+          {
+            "name": "allowed_set",
+            "passed": true,
+            "explanation": "Action is in the Rulebook set."
+          },
+          {
+            "name": "attempt_cap",
+            "passed": true,
+            "explanation": "Attempt count remains below the configured cap."
+          },
+          {
+            "name": "capability",
+            "passed": true,
+            "explanation": "The dry-run adapter declares this capability."
+          },
+          {
+            "name": "class_stop",
+            "passed": true,
+            "explanation": "Effective Class D cannot create automated effects."
+          },
+          {
+            "name": "contact_cap",
+            "passed": true,
+            "explanation": "Customer contact stays inside both limits."
+          },
+          {
+            "name": "cooldown",
+            "passed": true,
+            "explanation": "The deterministic cooldown boundary is respected."
+          },
+          {
+            "name": "immutable_money",
+            "passed": true,
+            "explanation": "Amount and currency match stored payment facts."
+          },
+          {
+            "name": "stop_list",
+            "passed": true,
+            "explanation": "No manual stop blocks the action."
+          }
+        ]
+      },
+      {
+        "decision_id": "dec_17057835bb07fb5d267a",
+        "event_id": "evt_demo_002",
+        "payment_id": "pay_SALVAGE002",
+        "created_at": "2026-08-29T13:00:00Z",
+        "reason": "insufficient_funds",
+        "effective_class": "B",
+        "advisory_class": null,
+        "known_reason": true,
+        "review_required": false,
+        "triage_rationale": "Immediate retry is unlikely to help; a later attempt may be appropriate.",
+        "selected_action": "schedule_later_retry",
+        "next_eligible_at": "2026-08-30T01:00:00Z",
+        "reason_map_fingerprint": "cd6bd426dbf753b4e267d0fbfed4e52ad6c05082f2a5b0d848237acb92accffa",
+        "policy_version": "2026-08-29.1",
+        "policy_fingerprint": "071b420491e02d0659b2cfbb1217d08769b5e4f709a0e3fa0cdb7b1d12018f31",
+        "decision_hash": "94e07718a11d65ee7da4e104758c72606e2109472409ec9aa2655902cf7c801d",
+        "advisory_rationale": null,
+        "advisory_confidence": null,
+        "advisory_provider": null,
+        "advisory_cache_key": null,
+        "amount_minor": 875000,
+        "currency": "INR",
+        "method": "upi",
+        "idempotency_key": "60b3dbe00e15b92e8f00c9dc622e23c076e05e0985214b198607ba5ecab20e73",
+        "effect_action": "schedule_later_retry",
+        "effect_state": "dry_run",
+        "allowed_actions": [
+          "schedule_later_retry",
+          "stop"
+        ],
+        "decision_reasons": [
+          "funds_cooldown_scheduled"
+        ],
+        "gate_checks": [
+          {
+            "name": "allowed_set",
+            "passed": true,
+            "explanation": "Action is in the Rulebook set."
+          },
+          {
+            "name": "attempt_cap",
+            "passed": true,
+            "explanation": "Attempt count remains below the configured cap."
+          },
+          {
+            "name": "capability",
+            "passed": true,
+            "explanation": "The dry-run adapter declares this capability."
+          },
+          {
+            "name": "class_stop",
+            "passed": true,
+            "explanation": "Effective Class D cannot create automated effects."
+          },
+          {
+            "name": "contact_cap",
+            "passed": true,
+            "explanation": "Customer contact stays inside both limits."
+          },
+          {
+            "name": "cooldown",
+            "passed": true,
+            "explanation": "The deterministic cooldown boundary is respected."
+          },
+          {
+            "name": "immutable_money",
+            "passed": true,
+            "explanation": "Amount and currency match stored payment facts."
+          },
+          {
+            "name": "stop_list",
+            "passed": true,
+            "explanation": "No manual stop blocks the action."
+          }
+        ]
+      }
+    ],
+    "next_cursor": null
+  },
+  "batches": {
+    "items": [
+      {
+        "batch_id": "batch_20260829_500",
+        "seed": 20260829,
+        "scenario_count": 500,
+        "batch_digest": "47e6e95f61f92ee38f9c5c85c9e7892e58d1ea928355a021d355baa0f13f856c",
+        "created_at": "2026-08-29T12:00:00Z"
+      }
+    ]
+  },
+  "ledger": {
+    "valid": true,
+    "entry_count": 12,
+    "final_hash": "d7b99865ddec17361e9c62635c2babb1dbe64f65ed50061b62431cf99db62765",
+    "first_mismatch_sequence": null
+  },
+  "result": {
+    "schema_version": "1.1",
+    "batch_id": "batch_20260829_500",
+    "seed": 20260829,
+    "scenario_count": 500,
+    "batch_digest": "47e6e95f61f92ee38f9c5c85c9e7892e58d1ea928355a021d355baa0f13f856c",
+    "fixed_clock": "2026-08-29T12:00:00Z",
+    "assumptions": {
+      "version": "2026-08-29.1",
+      "sensitivity_range_percent": 30,
+      "note": "Probabilities are transparent prototype inputs, not industry benchmarks."
+    },
+    "real_vs_simulated": "Real: deterministic triage, policy, Gatekeeper, idempotency and audit code. Simulated: batch volume, customer behavior and counterfactual recovery outcomes.",
+    "map_coverage_rate": 89.6,
+    "fallback_rate": 10.4,
+    "policies": [
+      {
+        "policy": "retry_all_3x",
+        "scenario_count": 500,
+        "recovered_count": 184,
+        "recovery_rate": 36.8,
+        "recovered_minor_units": 20425400,
+        "attempts": 1247,
+        "recovered_minor_units_per_attempt": 16379.63,
+        "wasted_attempts": 948,
+        "customer_contacts": 0,
+        "class_d_violations": 288,
+        "decisions_digest": "695f091c1cb779d164a0f43e86bab5ba4d8aec46442bd9d34471ff9a64d413a1"
+      },
+      {
+        "policy": "never_retry",
+        "scenario_count": 500,
+        "recovered_count": 0,
+        "recovery_rate": 0.0,
+        "recovered_minor_units": 0,
+        "attempts": 0,
+        "recovered_minor_units_per_attempt": 0.0,
+        "wasted_attempts": 0,
+        "customer_contacts": 0,
+        "class_d_violations": 0,
+        "decisions_digest": "b68f1d2b8feca0b27919db477b61762db2c2aa1a64c6e06586ee90cfbba614a9"
+      },
+      {
+        "policy": "salvage",
+        "scenario_count": 500,
+        "recovered_count": 253,
+        "recovery_rate": 50.6,
+        "recovered_minor_units": 28023300,
+        "attempts": 498,
+        "recovered_minor_units_per_attempt": 56271.69,
+        "wasted_attempts": 199,
+        "customer_contacts": 137,
+        "class_d_violations": 0,
+        "decisions_digest": "faf111d76f96cf66e143cff16132135ba2a7fed9a4a7399168540e6ea17e2679"
+      }
+    ],
+    "sensitivity": [
+      {
+        "label": "lower",
+        "probability_multiplier": 0.7,
+        "batch_digest": "47e6e95f61f92ee38f9c5c85c9e7892e58d1ea928355a021d355baa0f13f856c",
+        "policies": [
+          {
+            "policy": "retry_all_3x",
+            "scenario_count": 500,
+            "recovered_count": 129,
+            "recovery_rate": 25.8,
+            "recovered_minor_units": 14365900,
+            "attempts": 1328,
+            "recovered_minor_units_per_attempt": 10817.7,
+            "wasted_attempts": 1113,
+            "customer_contacts": 0,
+            "class_d_violations": 288,
+            "decisions_digest": "ca2f5b7009ec0fcf233ffc8f5ee83e9b2900d60c6012321c180b16562aac4ba7"
+          },
+          {
+            "policy": "never_retry",
+            "scenario_count": 500,
+            "recovered_count": 0,
+            "recovery_rate": 0.0,
+            "recovered_minor_units": 0,
+            "attempts": 0,
+            "recovered_minor_units_per_attempt": 0.0,
+            "wasted_attempts": 0,
+            "customer_contacts": 0,
+            "class_d_violations": 0,
+            "decisions_digest": "b68f1d2b8feca0b27919db477b61762db2c2aa1a64c6e06586ee90cfbba614a9"
+          },
+          {
+            "policy": "salvage",
+            "scenario_count": 500,
+            "recovered_count": 180,
+            "recovery_rate": 36.0,
+            "recovered_minor_units": 19931200,
+            "attempts": 565,
+            "recovered_minor_units_per_attempt": 35276.46,
+            "wasted_attempts": 350,
+            "customer_contacts": 137,
+            "class_d_violations": 0,
+            "decisions_digest": "a8f5143f8ecaf93d4cea38aa782c6cc4d3559f54dda8fd8aa40be0f9853ca26c"
+          }
+        ]
+      },
+      {
+        "label": "base",
+        "probability_multiplier": 1.0,
+        "batch_digest": "47e6e95f61f92ee38f9c5c85c9e7892e58d1ea928355a021d355baa0f13f856c",
+        "policies": [
+          {
+            "policy": "retry_all_3x",
+            "scenario_count": 500,
+            "recovered_count": 184,
+            "recovery_rate": 36.8,
+            "recovered_minor_units": 20425400,
+            "attempts": 1247,
+            "recovered_minor_units_per_attempt": 16379.63,
+            "wasted_attempts": 948,
+            "customer_contacts": 0,
+            "class_d_violations": 288,
+            "decisions_digest": "695f091c1cb779d164a0f43e86bab5ba4d8aec46442bd9d34471ff9a64d413a1"
+          },
+          {
+            "policy": "never_retry",
+            "scenario_count": 500,
+            "recovered_count": 0,
+            "recovery_rate": 0.0,
+            "recovered_minor_units": 0,
+            "attempts": 0,
+            "recovered_minor_units_per_attempt": 0.0,
+            "wasted_attempts": 0,
+            "customer_contacts": 0,
+            "class_d_violations": 0,
+            "decisions_digest": "b68f1d2b8feca0b27919db477b61762db2c2aa1a64c6e06586ee90cfbba614a9"
+          },
+          {
+            "policy": "salvage",
+            "scenario_count": 500,
+            "recovered_count": 253,
+            "recovery_rate": 50.6,
+            "recovered_minor_units": 28023300,
+            "attempts": 498,
+            "recovered_minor_units_per_attempt": 56271.69,
+            "wasted_attempts": 199,
+            "customer_contacts": 137,
+            "class_d_violations": 0,
+            "decisions_digest": "faf111d76f96cf66e143cff16132135ba2a7fed9a4a7399168540e6ea17e2679"
+          }
+        ]
+      },
+      {
+        "label": "upper",
+        "probability_multiplier": 1.3,
+        "batch_digest": "47e6e95f61f92ee38f9c5c85c9e7892e58d1ea928355a021d355baa0f13f856c",
+        "policies": [
+          {
+            "policy": "retry_all_3x",
+            "scenario_count": 500,
+            "recovered_count": 237,
+            "recovery_rate": 47.4,
+            "recovered_minor_units": 27077400,
+            "attempts": 1178,
+            "recovered_minor_units_per_attempt": 22985.91,
+            "wasted_attempts": 789,
+            "customer_contacts": 0,
+            "class_d_violations": 288,
+            "decisions_digest": "e960753ba0137897804fdf5b7c4bcd077e40ed1dc6cec51b06d693853fe837f9"
+          },
+          {
+            "policy": "never_retry",
+            "scenario_count": 500,
+            "recovered_count": 0,
+            "recovery_rate": 0.0,
+            "recovered_minor_units": 0,
+            "attempts": 0,
+            "recovered_minor_units_per_attempt": 0.0,
+            "wasted_attempts": 0,
+            "customer_contacts": 0,
+            "class_d_violations": 0,
+            "decisions_digest": "b68f1d2b8feca0b27919db477b61762db2c2aa1a64c6e06586ee90cfbba614a9"
+          },
+          {
+            "policy": "salvage",
+            "scenario_count": 500,
+            "recovered_count": 328,
+            "recovery_rate": 65.6,
+            "recovered_minor_units": 36482500,
+            "attempts": 449,
+            "recovered_minor_units_per_attempt": 81252.78,
+            "wasted_attempts": 60,
+            "customer_contacts": 137,
+            "class_d_violations": 0,
+            "decisions_digest": "0618cb2ed679b924516cd2e980b0b5c402aff2484531fd645018b8d706fa3a14"
+          }
+        ]
+      }
+    ],
+    "generated_at": "2026-08-29T12:00:00Z"
+  },
+  "source": "static_demo"
+}

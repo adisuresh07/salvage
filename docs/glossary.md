@@ -83,6 +83,22 @@ listed ambiguous synonyms where present.
 | Webhook event ID           | Value of `x-razorpay-event-id`, used as the delivery deduplication key.                                                                              |
 | Wasted attempt             | Evaluator retry against a scenario that cannot recover on that rail under hidden truth.                                                              |
 
+## Local test interface
+
+**Synthetic playground:** a local-only interface for creating isolated test
+events, processing them through the shared pipeline, and inspecting dry-run
+receipts. It is not a Razorpay Test Mode integration or live recovery control.
+
+**Connected simulator:** opt-in local console using actual Ollama Cloud calls
+and Razorpay Test Mode orders. Its synthetic events, API-observed failures, and
+signed webhook deliveries have distinct provenance (ADR-0014).
+
+**Cloud generation:** one persisted advisory attempt with a stable run ID,
+model, timestamp, usage, latency, and an explicit success/unavailable status.
+
+**API-observed failure:** a failed payment fetched server-side from Razorpay and
+correlated to a test order. It is not evidence of webhook delivery.
+
 ## Avoided language
 
 - Avoid **exactly once**; say **effectively-once logical effect**.

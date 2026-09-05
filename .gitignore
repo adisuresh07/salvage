@@ -1,6 +1,8 @@
 # Local agent/session state
 .omc/
 .claude/settings.local.json
+.vercel/
+.tools/
 
 # Secrets and machine-specific configuration
 .env
@@ -25,6 +27,8 @@ htmlcov/
 node_modules/
 console/node_modules/
 console/dist/
+console/.vite/
+console/*.tsbuildinfo
 playwright-report/
 test-results/
 coverage/
@@ -35,6 +39,9 @@ coverage/
 *.db-wal
 *.sqlite
 *.sqlite3
+data/*.db-*
+reports/*.html
+reports/*.json
 artifacts/
 results/
 

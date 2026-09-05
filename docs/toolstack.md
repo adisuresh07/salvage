@@ -94,6 +94,11 @@ Safety rules:
 service is unavailable, use a controlled staging host or self-hosted runner; do
 not silently switch to a paid tunnel.
 
+ADR-0014 permits an account-free temporary Cloudflare Quick Tunnel for the
+connected simulator when zrok account setup is unavailable. Only the dedicated
+webhook receiver port is exposed. A public URL does not prove Razorpay delivery;
+dashboard registration and an authenticated received event are required.
+
 ## 7. Documentation quality
 
 | Tool              |        Baseline | Use                                          |

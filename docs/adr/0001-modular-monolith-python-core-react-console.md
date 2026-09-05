@@ -55,3 +55,7 @@ It contains no payment policy and no mutation controls.
 ## Supersedes / superseded by
 
 Initial decision.
+
+2026-08-31: [ADR-0013](0013-isolated-local-synthetic-playground.md) introduces
+an isolated, demo-only synthetic playground. It narrowly supersedes the ban on
+all UI mutation controls; the operator API remains read-only.

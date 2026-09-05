@@ -23,6 +23,12 @@ format and status rules.
 
 ## Decision precedence
 
+[ADR-0014](adr/0014-connected-cloud-only-test-simulator.md) adds an opt-in
+Ollama Cloud-only simulator with Razorpay Test Mode orders and signed ingress.
+
+[ADR-0013](adr/0013-isolated-local-synthetic-playground.md) adds an isolated,
+local-only synthetic playground while preserving the read-only operator API.
+
 The newest accepted ADR that explicitly supersedes another decision wins.
 Editing an accepted ADR to change its decision is prohibited; write a new ADR
 and mark the old one superseded.

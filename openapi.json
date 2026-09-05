@@ -1,0 +1,1984 @@
+{
+  "components": {
+    "schemas": {
+      "ActionClass": {
+        "enum": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        "title": "ActionClass",
+        "type": "string"
+      },
+      "AssumptionsOut": {
+        "properties": {
+          "note": {
+            "title": "Note",
+            "type": "string"
+          },
+          "sensitivity_range_percent": {
+            "title": "Sensitivity Range Percent",
+            "type": "integer"
+          },
+          "version": {
+            "title": "Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "version",
+          "sensitivity_range_percent",
+          "note"
+        ],
+        "title": "AssumptionsOut",
+        "type": "object"
+      },
+      "BatchListOut": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/BatchOut"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "BatchListOut",
+        "type": "object"
+      },
+      "BatchOut": {
+        "properties": {
+          "batch_digest": {
+            "title": "Batch Digest",
+            "type": "string"
+          },
+          "batch_id": {
+            "title": "Batch Id",
+            "type": "string"
+          },
+          "created_at": {
+            "title": "Created At",
+            "type": "string"
+          },
+          "scenario_count": {
+            "title": "Scenario Count",
+            "type": "integer"
+          },
+          "seed": {
+            "title": "Seed",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "batch_id",
+          "seed",
+          "scenario_count",
+          "batch_digest",
+          "created_at"
+        ],
+        "title": "BatchOut",
+        "type": "object"
+      },
+      "BatchResultOut": {
+        "properties": {
+          "assumptions": {
+            "$ref": "#/components/schemas/AssumptionsOut"
+          },
+          "batch_digest": {
+            "title": "Batch Digest",
+            "type": "string"
+          },
+          "batch_id": {
+            "title": "Batch Id",
+            "type": "string"
+          },
+          "fallback_rate": {
+            "title": "Fallback Rate",
+            "type": "number"
+          },
+          "fixed_clock": {
+            "title": "Fixed Clock",
+            "type": "string"
+          },
+          "generated_at": {
+            "title": "Generated At",
+            "type": "string"
+          },
+          "map_coverage_rate": {
+            "title": "Map Coverage Rate",
+            "type": "number"
+          },
+          "policies": {
+            "items": {
+              "$ref": "#/components/schemas/PolicyMetricsOut"
+            },
+            "title": "Policies",
+            "type": "array"
+          },
+          "real_vs_simulated": {
+            "title": "Real Vs Simulated",
+            "type": "string"
+          },
+          "scenario_count": {
+            "title": "Scenario Count",
+            "type": "integer"
+          },
+          "schema_version": {
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "seed": {
+            "title": "Seed",
+            "type": "integer"
+          },
+          "sensitivity": {
+            "items": {
+              "$ref": "#/components/schemas/SensitivityOut"
+            },
+            "title": "Sensitivity",
+            "type": "array"
+          }
+        },
+        "required": [
+          "schema_version",
+          "batch_id",
+          "seed",
+          "scenario_count",
+          "batch_digest",
+          "fixed_clock",
+          "assumptions",
+          "real_vs_simulated",
+          "map_coverage_rate",
+          "fallback_rate",
+          "policies",
+          "sensitivity",
+          "generated_at"
+        ],
+        "title": "BatchResultOut",
+        "type": "object"
+      },
+      "CloudExplanation": {
+        "additionalProperties": false,
+        "properties": {
+          "confidence": {
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ],
+            "title": "Confidence",
+            "type": "string"
+          },
+          "explanation": {
+            "maxLength": 900,
+            "minLength": 10,
+            "title": "Explanation",
+            "type": "string"
+          },
+          "operator_note": {
+            "maxLength": 500,
+            "minLength": 5,
+            "title": "Operator Note",
+            "type": "string"
+          },
+          "suggested_class": {
+            "$ref": "#/components/schemas/ActionClass"
+          }
+        },
+        "required": [
+          "suggested_class",
+          "confidence",
+          "explanation",
+          "operator_note"
+        ],
+        "title": "CloudExplanation",
+        "type": "object"
+      },
+      "CloudResult": {
+        "properties": {
+          "actor": {
+            "const": "local_operator",
+            "default": "local_operator",
+            "title": "Actor",
+            "type": "string"
+          },
+          "cost_note": {
+            "default": "Not supplied by provider; check your Ollama plan quota.",
+            "title": "Cost Note",
+            "type": "string"
+          },
+          "elapsed_ms": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Elapsed Ms"
+          },
+          "error_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Code"
+          },
+          "estimated_cost_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimated Cost Usd"
+          },
+          "generated_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Generated At"
+          },
+          "generation_id": {
+            "title": "Generation Id",
+            "type": "string"
+          },
+          "input_tokens": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Input Tokens"
+          },
+          "model": {
+            "title": "Model",
+            "type": "string"
+          },
+          "output_tokens": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Output Tokens"
+          },
+          "prompt_fingerprint": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Prompt Fingerprint"
+          },
+          "prompt_version": {
+            "default": "operator-explanation-v1",
+            "title": "Prompt Version",
+            "type": "string"
+          },
+          "provider": {
+            "const": "ollama_cloud",
+            "default": "ollama_cloud",
+            "title": "Provider",
+            "type": "string"
+          },
+          "result": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CloudExplanation"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "status": {
+            "enum": [
+              "requesting",
+              "fresh",
+              "unavailable",
+              "invalid_response"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "model",
+          "generation_id"
+        ],
+        "title": "CloudResult",
+        "type": "object"
+      },
+      "DecisionListOut": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/DecisionOut"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "DecisionListOut",
+        "type": "object"
+      },
+      "DecisionOut": {
+        "properties": {
+          "advisory_cache_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Advisory Cache Key"
+          },
+          "advisory_class": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Advisory Class"
+          },
+          "advisory_confidence": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Advisory Confidence"
+          },
+          "advisory_provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Advisory Provider"
+          },
+          "advisory_rationale": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Advisory Rationale"
+          },
+          "allowed_actions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Allowed Actions",
+            "type": "array"
+          },
+          "amount_minor": {
+            "title": "Amount Minor",
+            "type": "integer"
+          },
+          "created_at": {
+            "title": "Created At",
+            "type": "string"
+          },
+          "currency": {
+            "title": "Currency",
+            "type": "string"
+          },
+          "decision_hash": {
+            "title": "Decision Hash",
+            "type": "string"
+          },
+          "decision_id": {
+            "title": "Decision Id",
+            "type": "string"
+          },
+          "decision_reasons": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Decision Reasons",
+            "type": "array"
+          },
+          "effect_action": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effect Action"
+          },
+          "effect_state": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effect State"
+          },
+          "effective_class": {
+            "title": "Effective Class",
+            "type": "string"
+          },
+          "event_id": {
+            "title": "Event Id",
+            "type": "string"
+          },
+          "gate_checks": {
+            "items": {
+              "$ref": "#/components/schemas/GateCheckOut"
+            },
+            "title": "Gate Checks",
+            "type": "array"
+          },
+          "idempotency_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Idempotency Key"
+          },
+          "known_reason": {
+            "title": "Known Reason",
+            "type": "boolean"
+          },
+          "method": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Method"
+          },
+          "next_eligible_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Eligible At"
+          },
+          "payment_id": {
+            "title": "Payment Id",
+            "type": "string"
+          },
+          "policy_fingerprint": {
+            "title": "Policy Fingerprint",
+            "type": "string"
+          },
+          "policy_version": {
+            "title": "Policy Version",
+            "type": "string"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          },
+          "reason_map_fingerprint": {
+            "title": "Reason Map Fingerprint",
+            "type": "string"
+          },
+          "review_required": {
+            "title": "Review Required",
+            "type": "boolean"
+          },
+          "selected_action": {
+            "title": "Selected Action",
+            "type": "string"
+          },
+          "triage_rationale": {
+            "title": "Triage Rationale",
+            "type": "string"
+          }
+        },
+        "required": [
+          "decision_id",
+          "event_id",
+          "payment_id",
+          "created_at",
+          "reason",
+          "effective_class",
+          "advisory_class",
+          "advisory_rationale",
+          "advisory_confidence",
+          "advisory_provider",
+          "advisory_cache_key",
+          "known_reason",
+          "review_required",
+          "triage_rationale",
+          "allowed_actions",
+          "selected_action",
+          "decision_reasons",
+          "next_eligible_at",
+          "reason_map_fingerprint",
+          "policy_version",
+          "policy_fingerprint",
+          "decision_hash",
+          "amount_minor",
+          "currency",
+          "method",
+          "idempotency_key",
+          "effect_action",
+          "effect_state",
+          "gate_checks"
+        ],
+        "title": "DecisionOut",
+        "type": "object"
+      },
+      "GateCheckOut": {
+        "properties": {
+          "explanation": {
+            "title": "Explanation",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "passed": {
+            "title": "Passed",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "name",
+          "passed",
+          "explanation"
+        ],
+        "title": "GateCheckOut",
+        "type": "object"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "HealthOut": {
+        "properties": {
+          "details": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Details"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status"
+        ],
+        "title": "HealthOut",
+        "type": "object"
+      },
+      "LedgerOut": {
+        "properties": {
+          "entry_count": {
+            "title": "Entry Count",
+            "type": "integer"
+          },
+          "final_hash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Final Hash"
+          },
+          "first_mismatch_sequence": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Mismatch Sequence"
+          },
+          "valid": {
+            "title": "Valid",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "valid",
+          "entry_count",
+          "final_hash",
+          "first_mismatch_sequence"
+        ],
+        "title": "LedgerOut",
+        "type": "object"
+      },
+      "PlaygroundInput": {
+        "additionalProperties": false,
+        "properties": {
+          "amount_minor": {
+            "maximum": 100000000.0,
+            "minimum": 1.0,
+            "title": "Amount Minor",
+            "type": "integer"
+          },
+          "method": {
+            "default": "card",
+            "enum": [
+              "card",
+              "upi",
+              "netbanking"
+            ],
+            "title": "Method",
+            "type": "string"
+          },
+          "run_id": {
+            "format": "uuid",
+            "title": "Run Id",
+            "type": "string"
+          },
+          "scenario": {
+            "enum": [
+              "gateway_timeout",
+              "insufficient_funds",
+              "card_expired",
+              "risk_threshold",
+              "processor_code_z91"
+            ],
+            "title": "Scenario",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "scenario",
+          "amount_minor"
+        ],
+        "title": "PlaygroundInput",
+        "type": "object"
+      },
+      "PlaygroundReceipt": {
+        "properties": {
+          "decision": {
+            "$ref": "#/components/schemas/DecisionOut"
+          },
+          "decision_count": {
+            "title": "Decision Count",
+            "type": "integer"
+          },
+          "duplicate": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duplicate"
+          },
+          "effect_count": {
+            "title": "Effect Count",
+            "type": "integer"
+          },
+          "elapsed_ms": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Elapsed Ms"
+          },
+          "event_count": {
+            "title": "Event Count",
+            "type": "integer"
+          },
+          "ingress_verified": {
+            "title": "Ingress Verified",
+            "type": "boolean"
+          },
+          "ledger_entry_count": {
+            "title": "Ledger Entry Count",
+            "type": "integer"
+          },
+          "ledger_valid": {
+            "title": "Ledger Valid",
+            "type": "boolean"
+          },
+          "request": {
+            "$ref": "#/components/schemas/PlaygroundInput"
+          },
+          "safety_mode": {
+            "const": "dry_run",
+            "default": "dry_run",
+            "title": "Safety Mode",
+            "type": "string"
+          }
+        },
+        "required": [
+          "request",
+          "decision",
+          "duplicate",
+          "ingress_verified",
+          "ledger_valid",
+          "event_count",
+          "decision_count",
+          "effect_count",
+          "ledger_entry_count",
+          "elapsed_ms"
+        ],
+        "title": "PlaygroundReceipt",
+        "type": "object"
+      },
+      "PlaygroundScenario": {
+        "properties": {
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "id": {
+            "enum": [
+              "gateway_timeout",
+              "insufficient_funds",
+              "card_expired",
+              "risk_threshold",
+              "processor_code_z91"
+            ],
+            "title": "Id",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "description"
+        ],
+        "title": "PlaygroundScenario",
+        "type": "object"
+      },
+      "PlaygroundState": {
+        "properties": {
+          "recent": {
+            "items": {
+              "$ref": "#/components/schemas/DecisionOut"
+            },
+            "title": "Recent",
+            "type": "array"
+          },
+          "remaining_runs": {
+            "title": "Remaining Runs",
+            "type": "integer"
+          },
+          "scenarios": {
+            "items": {
+              "$ref": "#/components/schemas/PlaygroundScenario"
+            },
+            "title": "Scenarios",
+            "type": "array"
+          }
+        },
+        "required": [
+          "scenarios",
+          "recent",
+          "remaining_runs"
+        ],
+        "title": "PlaygroundState",
+        "type": "object"
+      },
+      "PolicyMetricsOut": {
+        "properties": {
+          "attempts": {
+            "title": "Attempts",
+            "type": "integer"
+          },
+          "class_d_violations": {
+            "title": "Class D Violations",
+            "type": "integer"
+          },
+          "customer_contacts": {
+            "title": "Customer Contacts",
+            "type": "integer"
+          },
+          "decisions_digest": {
+            "title": "Decisions Digest",
+            "type": "string"
+          },
+          "policy": {
+            "title": "Policy",
+            "type": "string"
+          },
+          "recovered_count": {
+            "title": "Recovered Count",
+            "type": "integer"
+          },
+          "recovered_minor_units": {
+            "title": "Recovered Minor Units",
+            "type": "integer"
+          },
+          "recovered_minor_units_per_attempt": {
+            "title": "Recovered Minor Units Per Attempt",
+            "type": "number"
+          },
+          "recovery_rate": {
+            "title": "Recovery Rate",
+            "type": "number"
+          },
+          "scenario_count": {
+            "title": "Scenario Count",
+            "type": "integer"
+          },
+          "wasted_attempts": {
+            "title": "Wasted Attempts",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "policy",
+          "scenario_count",
+          "recovered_count",
+          "recovery_rate",
+          "recovered_minor_units",
+          "attempts",
+          "recovered_minor_units_per_attempt",
+          "wasted_attempts",
+          "customer_contacts",
+          "class_d_violations",
+          "decisions_digest"
+        ],
+        "title": "PolicyMetricsOut",
+        "type": "object"
+      },
+      "RunInput": {
+        "additionalProperties": false,
+        "properties": {
+          "amount_minor": {
+            "maximum": 1000000.0,
+            "minimum": 100.0,
+            "title": "Amount Minor",
+            "type": "integer"
+          },
+          "method": {
+            "default": "card",
+            "enum": [
+              "card",
+              "upi",
+              "netbanking"
+            ],
+            "title": "Method",
+            "type": "string"
+          },
+          "run_id": {
+            "format": "uuid",
+            "title": "Run Id",
+            "type": "string"
+          },
+          "scenario": {
+            "default": "gateway_timeout",
+            "enum": [
+              "gateway_timeout",
+              "insufficient_funds",
+              "card_expired",
+              "risk_threshold",
+              "processor_code_z91"
+            ],
+            "title": "Scenario",
+            "type": "string"
+          },
+          "source": {
+            "enum": [
+              "synthetic",
+              "razorpay_test"
+            ],
+            "title": "Source",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "source",
+          "amount_minor"
+        ],
+        "title": "RunInput",
+        "type": "object"
+      },
+      "RunOut": {
+        "properties": {
+          "advice": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CloudResult"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "amount_minor": {
+            "title": "Amount Minor",
+            "type": "integer"
+          },
+          "checkout_key_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Checkout Key Id"
+          },
+          "created_at": {
+            "title": "Created At",
+            "type": "string"
+          },
+          "decision": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DecisionOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "error_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Code"
+          },
+          "event_source": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Event Source"
+          },
+          "ledger_valid": {
+            "title": "Ledger Valid",
+            "type": "boolean"
+          },
+          "method": {
+            "title": "Method",
+            "type": "string"
+          },
+          "order_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Order Id"
+          },
+          "payment_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Payment Id"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "safety_mode": {
+            "const": "test_only_dry_run_recovery",
+            "default": "test_only_dry_run_recovery",
+            "title": "Safety Mode",
+            "type": "string"
+          },
+          "scenario": {
+            "title": "Scenario",
+            "type": "string"
+          },
+          "source": {
+            "title": "Source",
+            "type": "string"
+          },
+          "stage": {
+            "title": "Stage",
+            "type": "string"
+          },
+          "webhook_deliveries": {
+            "title": "Webhook Deliveries",
+            "type": "integer"
+          },
+          "webhook_received": {
+            "title": "Webhook Received",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "run_id",
+          "source",
+          "scenario",
+          "amount_minor",
+          "method",
+          "stage",
+          "created_at",
+          "order_id",
+          "payment_id",
+          "event_source",
+          "error_code",
+          "checkout_key_id",
+          "decision",
+          "advice",
+          "webhook_received",
+          "webhook_deliveries",
+          "ledger_valid"
+        ],
+        "title": "RunOut",
+        "type": "object"
+      },
+      "SensitivityOut": {
+        "properties": {
+          "batch_digest": {
+            "title": "Batch Digest",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "policies": {
+            "items": {
+              "$ref": "#/components/schemas/PolicyMetricsOut"
+            },
+            "title": "Policies",
+            "type": "array"
+          },
+          "probability_multiplier": {
+            "title": "Probability Multiplier",
+            "type": "number"
+          }
+        },
+        "required": [
+          "label",
+          "probability_multiplier",
+          "batch_digest",
+          "policies"
+        ],
+        "title": "SensitivityOut",
+        "type": "object"
+      },
+      "SimulatorState": {
+        "properties": {
+          "cloud_configured": {
+            "title": "Cloud Configured",
+            "type": "boolean"
+          },
+          "cloud_model": {
+            "title": "Cloud Model",
+            "type": "string"
+          },
+          "public_webhook_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Public Webhook Url"
+          },
+          "razorpay_configured": {
+            "title": "Razorpay Configured",
+            "type": "boolean"
+          },
+          "recent": {
+            "items": {
+              "$ref": "#/components/schemas/RunOut"
+            },
+            "title": "Recent",
+            "type": "array"
+          },
+          "remaining_orders": {
+            "title": "Remaining Orders",
+            "type": "integer"
+          },
+          "remaining_runs": {
+            "title": "Remaining Runs",
+            "type": "integer"
+          },
+          "scenarios": {
+            "items": {
+              "$ref": "#/components/schemas/PlaygroundScenario"
+            },
+            "title": "Scenarios",
+            "type": "array"
+          },
+          "webhook_received": {
+            "title": "Webhook Received",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "cloud_configured",
+          "cloud_model",
+          "razorpay_configured",
+          "public_webhook_url",
+          "webhook_received",
+          "remaining_runs",
+          "remaining_orders",
+          "scenarios",
+          "recent"
+        ],
+        "title": "SimulatorState",
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "ctx": {
+            "title": "Context",
+            "type": "object"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Deterministic payment-recovery evidence and read-only operator views.",
+    "title": "Salvage read-only API",
+    "version": "0.1.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/api/v1/batches": {
+      "get": {
+        "operationId": "batches_api_v1_batches_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchListOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Batches",
+        "tags": [
+          "console"
+        ]
+      }
+    },
+    "/api/v1/batches/{batch_id}/results": {
+      "get": {
+        "operationId": "batch_results_api_v1_batches__batch_id__results_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "batch_id",
+            "required": true,
+            "schema": {
+              "title": "Batch Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchResultOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Batch Results",
+        "tags": [
+          "console"
+        ]
+      }
+    },
+    "/api/v1/decisions": {
+      "get": {
+        "operationId": "decisions_api_v1_decisions_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DecisionListOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Decisions",
+        "tags": [
+          "console"
+        ]
+      }
+    },
+    "/api/v1/decisions/{decision_id}": {
+      "get": {
+        "operationId": "decision_detail_api_v1_decisions__decision_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "decision_id",
+            "required": true,
+            "schema": {
+              "title": "Decision Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DecisionOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Decision Detail",
+        "tags": [
+          "console"
+        ]
+      }
+    },
+    "/api/v1/escalations": {
+      "get": {
+        "operationId": "escalations_api_v1_escalations_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DecisionListOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Escalations",
+        "tags": [
+          "console"
+        ]
+      }
+    },
+    "/api/v1/ledger/status": {
+      "get": {
+        "operationId": "ledger_status_api_v1_ledger_status_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LedgerOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Ledger Status",
+        "tags": [
+          "console"
+        ]
+      }
+    },
+    "/api/v1/meta/versions": {
+      "get": {
+        "operationId": "versions_api_v1_meta_versions_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Versions Api V1 Meta Versions Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Versions",
+        "tags": [
+          "console"
+        ]
+      }
+    },
+    "/demo/v1/playground": {
+      "get": {
+        "operationId": "state_demo_v1_playground_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlaygroundState"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "State",
+        "tags": [
+          "local synthetic playground"
+        ]
+      }
+    },
+    "/demo/v1/runs": {
+      "post": {
+        "operationId": "run_scenario_demo_v1_runs_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "origin",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Origin"
+            }
+          },
+          {
+            "in": "header",
+            "name": "x-salvage-playground",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Salvage-Playground"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlaygroundInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlaygroundReceipt"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Run Scenario",
+        "tags": [
+          "local synthetic playground"
+        ]
+      }
+    },
+    "/demo/v1/runs/{run_id}/receipt": {
+      "get": {
+        "operationId": "download_receipt_demo_v1_runs__run_id__receipt_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlaygroundReceipt"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Download Receipt",
+        "tags": [
+          "local synthetic playground"
+        ]
+      }
+    },
+    "/health/live": {
+      "get": {
+        "operationId": "health_live_health_live_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Health Live",
+        "tags": [
+          "health"
+        ]
+      }
+    },
+    "/health/ready": {
+      "get": {
+        "operationId": "health_ready_health_ready_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Health Ready",
+        "tags": [
+          "health"
+        ]
+      }
+    },
+    "/simulator/v1/runs": {
+      "post": {
+        "operationId": "create_simulator_v1_runs_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RunInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create",
+        "tags": [
+          "connected test simulator"
+        ]
+      }
+    },
+    "/simulator/v1/runs/{run_id}": {
+      "get": {
+        "operationId": "detail_simulator_v1_runs__run_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Detail",
+        "tags": [
+          "connected test simulator"
+        ]
+      }
+    },
+    "/simulator/v1/runs/{run_id}/receipt": {
+      "get": {
+        "operationId": "receipt_simulator_v1_runs__run_id__receipt_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Receipt",
+        "tags": [
+          "connected test simulator"
+        ]
+      }
+    },
+    "/simulator/v1/runs/{run_id}/sync": {
+      "post": {
+        "operationId": "sync_simulator_v1_runs__run_id__sync_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Sync",
+        "tags": [
+          "connected test simulator"
+        ]
+      }
+    },
+    "/simulator/v1/status": {
+      "get": {
+        "operationId": "state_simulator_v1_status_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimulatorState"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "State",
+        "tags": [
+          "connected test simulator"
+        ]
+      }
+    },
+    "/webhooks/razorpay": {
+      "post": {
+        "operationId": "razorpay_webhook_webhooks_razorpay_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-razorpay-signature",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Razorpay-Signature"
+            }
+          },
+          {
+            "in": "header",
+            "name": "x-razorpay-event-id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Razorpay-Event-Id"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "boolean"
+                      }
+                    ]
+                  },
+                  "title": "Response Razorpay Webhook Webhooks Razorpay Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Razorpay Webhook",
+        "tags": [
+          "webhooks"
+        ]
+      }
+    },
+    "/webhooks/razorpay/test": {
+      "post": {
+        "operationId": "webhook_webhooks_razorpay_test_post",
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "anyOf": [
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "title": "Response Webhook Webhooks Razorpay Test Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Webhook",
+        "tags": [
+          "connected test webhook"
+        ]
+      }
+    }
+  }
+}

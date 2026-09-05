@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Salvage — End-to-End Recovery Sequence",
+    "output": "docs/flows/html/recovery-sequence.html",
+    "viewBox": [930, 840],
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "fast-path",
+        "label": "Webhook fast path",
+        "focus": ["razorpay", "ingress", "sqlite"],
+        "note": "HMAC verification, deduplication, and durable enqueue before 202 response."
+      },
+      {
+        "id": "decision-pipeline",
+        "label": "Deterministic decision pipeline",
+        "focus": ["worker", "rulebook", "gatekeeper"],
+        "note": "Pure rulebook decides; gatekeeper independently validates all 9 checks."
+      },
+      {
+        "id": "execution-ledger",
+        "label": "Execution & Audit Ledger",
+        "focus": ["worker", "adapter", "ledger", "sqlite"],
+        "note": "Effect execution, state mutation, and tamper-evident SHA-256 audit entry."
+      }
+    ]
+  },
+  "participants": [
+    { "id": "razorpay", "type": "external", "label": "Razorpay", "sublabel": "Test Mode" },
+    { "id": "ingress", "type": "backend", "label": "Ingress", "sublabel": "HMAC auth" },
+    { "id": "sqlite", "type": "database", "label": "SQLite", "sublabel": "durable store" },
+    { "id": "worker", "type": "backend", "label": "Worker", "sublabel": "job runner" },
+    { "id": "rulebook", "type": "backend", "label": "Rulebook", "sublabel": "pure policy" },
+    { "id": "gatekeeper", "type": "security", "label": "Gatekeeper", "sublabel": "9 safety checks" },
+    { "id": "adapter", "type": "backend", "label": "Adapter", "sublabel": "effect runner" },
+    { "id": "ledger", "type": "database", "label": "Ledger", "sublabel": "hash chain" }
+  ],
+  "segments": [
+    { "from": 140, "to": 290, "label": "Webhook Ingress" },
+    { "from": 310, "to": 540, "label": "Deterministic Decision" },
+    { "from": 560, "to": 770, "label": "Gating, Effect & Ledger" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "razorpay", "to": "ingress", "y": 170, "label": "POST /webhooks/razorpay", "variant": "emphasis" },
+    { "id": "m2", "from": "ingress", "to": "sqlite", "y": 210, "label": "INSERT event + job", "variant": "default" },
+    { "id": "m3", "from": "sqlite", "to": "ingress", "y": 245, "label": "inserted or duplicate", "variant": "return" },
+    { "id": "m4", "from": "ingress", "to": "razorpay", "y": 280, "label": "202 Accepted", "variant": "return" },
+    { "id": "m5", "from": "worker", "to": "sqlite", "y": 340, "label": "lease next queued job", "variant": "default" },
+    { "id": "m6", "from": "worker", "to": "rulebook", "y": 385, "label": "classify error & evaluate policy", "variant": "emphasis" },
+    { "id": "m7", "from": "rulebook", "to": "worker", "y": 425, "label": "PolicyDecision (action + allowed set)", "variant": "return" },
+    { "id": "m8", "from": "worker", "to": "gatekeeper", "y": 480, "label": "validate proposed action", "variant": "security" },
+    { "id": "m9", "from": "gatekeeper", "to": "worker", "y": 520, "label": "approve / reject (9 safety checks)", "variant": "return" },
+    { "id": "m10", "from": "worker", "to": "sqlite", "y": 585, "label": "BEGIN TX: record decision + state", "variant": "emphasis" },
+    { "id": "m11", "from": "worker", "to": "adapter", "y": 630, "label": "execute intent + idempotency key", "variant": "default" },
+    { "id": "m12", "from": "adapter", "to": "worker", "y": 670, "label": "effect execution result", "variant": "return" },
+    { "id": "m13", "from": "worker", "to": "ledger", "y": 720, "label": "append hash-chained audit entry", "variant": "default" }
+  ],
+  "activations": [
+    { "participant": "ingress", "from": 170, "to": 285, "type": "backend" },
+    { "participant": "worker", "from": 335, "to": 730, "type": "backend" },
+    { "participant": "rulebook", "from": 385, "to": 430, "type": "backend" },
+    { "participant": "gatekeeper", "from": 480, "to": 525, "type": "security" },
+    { "participant": "adapter", "from": 630, "to": 675, "type": "backend" }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Sub-Second Ingress",
+      "items": [
+        "HMAC verification occurs on raw bytes before JSON parse",
+        "Idempotent insert stores payload and queues background job",
+        "Razorpay receives 202 Accepted immediately"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Deterministic Safety Gate",
+      "items": [
+        "Rulebook is pure with no network or clock dependencies",
+        "Gatekeeper re-verifies attempt caps, cooldown, and class invariants",
+        "Atomic SQLite transaction records decision and intent"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Tamper-Evident Audit",
+      "items": [
+        "Every decision stage links SHA-256 prev_hash to entry_hash",
+        "Full verification via ledger integrity verify API",
+        "Zero Class D violations guaranteed across all recovery paths"
+      ]
+    }
+  ]
+}

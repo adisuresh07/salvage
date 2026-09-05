@@ -1,0 +1,36 @@
+services:
+  api:
+    build:
+      context: .
+    image: salvage:local
+    environment:
+      SALVAGE_MODE: demo
+      SALVAGE_LLM: off
+      SALVAGE_DATABASE_PATH: /app/data/salvage.db
+      SALVAGE_REPORTS_DIR: /app/reports
+    ports:
+      - "8000:8000"
+    volumes:
+      - salvage-data:/app/data
+      - salvage-reports:/app/reports
+    restart: unless-stopped
+
+  worker:
+    image: salvage:local
+    command: ["salvage", "work", "--loop"]
+    environment:
+      SALVAGE_MODE: demo
+      SALVAGE_LLM: off
+      SALVAGE_DATABASE_PATH: /app/data/salvage.db
+      SALVAGE_REPORTS_DIR: /app/reports
+    volumes:
+      - salvage-data:/app/data
+      - salvage-reports:/app/reports
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  salvage-data:
+  salvage-reports:

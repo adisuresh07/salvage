@@ -82,9 +82,12 @@ it with a clock patch.
 | ---------------------- | -------: | ---------- | ---------------------------------------------------------- |
 | `react` / `react-dom`  | `19.2.8` | MIT        | Read-only operator UI.                                     |
 | `vite`                 |  `8.2.2` | MIT        | Development server and static build.                       |
-| `typescript`           |  `7.0.2` | Apache-2.0 | Strict UI and generated API typing.                        |
+| `typescript`           |  `5.9.3` | Apache-2.0 | Strict UI and generated API typing; pinned to the `openapi-typescript` 7 peer range. |
 | `@vitejs/plugin-react` |  `6.1.1` | MIT        | React/Vite integration.                                    |
 | `openapi-typescript`   | `7.13.0` | MIT        | Generate types from FastAPI's checked-in OpenAPI artifact. |
+
+The demo-only synthetic playground uses the same stack and a separate SQLite
+file (ADR-0013). Its generated request types do not expose payment controls.
 
 No router, global state library, chart library, UI kit, or CSS framework is
 required. One read-only application can use platform `fetch`, React state,
@@ -122,6 +125,13 @@ model rationale are rendered through React text nodes.
 ## 7. Model options
 
 No model provider is mandatory.
+
+For ADR-0014's opt-in connected simulator the only online model provider is
+Ollama Cloud over existing `httpx`, defaulting to the discovered `gpt-oss:20b`
+model. It never falls back to local Ollama, Groq, or fixtures. Offline evaluation
+remains provider-free. No JavaScript AI SDK, database, or queue dependency was
+added. A temporary webhook-only tunnel may use checksum-verified cloudflared
+2026.8.2; it is not a mandatory build dependency or production host.
 
 | Option            | Cost posture                             | MVP role                                             | Safety notes                                                                                                                                                     |
 | ----------------- | ---------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |

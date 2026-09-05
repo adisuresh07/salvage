@@ -1,5 +1,22 @@
 # Threat model
 
+## Connected Test Mode simulator boundary (ADR-0014)
+
+The connected simulator uses its own SQLite file and loopback-only controls.
+Requests cannot supply provider hosts, secrets, contacts, or arbitrary prompts.
+Razorpay credentials must be test keys. Public exposure is limited to a
+dedicated HMAC-authenticated webhook-only application, which correlates events
+to locally created orders. Browser callbacks are untrusted; an explicit API
+check verifies payment/order/amount/currency facts. API evidence is not called a
+webhook. Only bounded reason codes and deterministic class/action reach Ollama
+Cloud; all model responses are schema-validated display annotations.
+
+Credentials stay in ignored server settings excluded from Docker/deployment
+contexts. Local files are permission-restricted. Provider errors are mapped to
+fixed codes rather than logged raw. Caps limit cloud attempts and test orders;
+uncertain external requests are not automatically retried. The simulator is
+single-process and not suitable for public control access without authentication.
+
 - **Status:** Required MVP controls
 - **Last reviewed:** 2026-08-29
 
@@ -125,6 +142,15 @@ These are acceptable only because the MVP uses test/synthetic data and no live
 money. Production work requires a new threat model and ADR set.
 
 ## 9. Security release checklist
+
+The local synthetic playground (ADR-0013) adds a deliberately isolated test
+surface. Only demo mode registers it. POST requires a fixed loopback origin and
+custom header; no CORS access is provided. Closed schemas prohibit payment IDs,
+contacts, credentials, or arbitrary payloads; amounts are bounded integer minor
+units. The single-process test runner limits distinct runs to 200, persists only
+synthetic facts in a separate sibling database, and forces cache-only advice and
+dry-run effects. This guard is not authentication for a public service: exposing
+the playground beyond loopback requires a new deployment/security review.
 
 - All security/adversarial tests pass.
 - Gitleaks reports no finding in files or history.
