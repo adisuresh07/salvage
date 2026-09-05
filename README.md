@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/salvage-banner.jpg" alt="Salvage — Payment Recovery Without Recklessness" width="100%">
+  <img src="docs/assets/salvage-dashboard.jpg" alt="Salvage Payment Recovery Engine — Operator Dashboard UI" width="100%">
 </p>
 
 <p align="center">
