@@ -33,8 +33,8 @@ flowchart TD
 
     E --> F
 
-    subgraph PIPELINE["🔄 Real deterministic pipeline\n(same code as production path)"]
-        F["Ingress projection\n(synthetic facts only)"]
+    subgraph PIPELINE ["Real deterministic pipeline"]
+        F["Ingress projection (synthetic facts only)"]
         F --> G["Triage → Rulebook → Gatekeeper"]
         G --> H["Effect intent created\n(dry-run adapter ONLY\ncache-only advice forced)"]
         H --> I["Ledger entry appended"]

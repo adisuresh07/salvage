@@ -13,26 +13,26 @@ The Salvage recovery architecture enforces strict boundary separation between:
 
 ```mermaid
 flowchart TD
-    RZ[Razorpay Test Mode] -->|POST /webhooks/razorpay| ING[Webhook Ingress]
-    ING -->|Verify HMAC & Store Event| SQL[(SQLite WAL Database)]
+    RZ["Razorpay Test Mode"] -->|POST /webhooks/razorpay| ING["Webhook Ingress"]
+    ING -->|Verify HMAC & Store Event| SQL[("SQLite WAL Database")]
     ING -->|202 Accepted| RZ
     
-    SQL -->|Atomically Lease Job| WRK[Recovery Worker]
-    WRK -->|Classify Reason| RBK[Rulebook Engine]
+    SQL -->|Atomically Lease Job| WRK["Recovery Worker"]
+    WRK -->|Classify Reason| RBK["Rulebook Engine"]
     
-    subgraph Advisory [Shadow Mode Annotation]
-        RBK -.->|Sanitized Facts| ADV[Advisory Layer]
-        ADV -.->|Opt-In Draft| LLM[LLM Provider]
+    subgraph Advisory ["Shadow Mode Annotation"]
+        RBK -.->|Sanitized Facts| ADV["Advisory Layer"]
+        ADV -.->|Opt-In Draft| LLM["LLM Provider"]
         LLM -.->|Suggestion Only| ADV
     end
     
-    RBK -->|Proposed Action| GTK{Gatekeeper Checks}
-    GTK -->|9 Invariants Approved| ADP[Effect Adapter]
-    ADP -->|Append Sealed Entry| LDG[(Audit Ledger)]
+    RBK -->|Proposed Action| GTK{"Gatekeeper Checks"}
+    GTK -->|9 Invariants Approved| ADP["Effect Adapter"]
+    ADP -->|Append Sealed Entry| LDG[("Audit Ledger")]
     ADP -.->|Dry Run / Test Call| RZ
     
-    SQL -->|Read-Only Queries| API[FastAPI Server]
-    API -->|REST API| CON[React Console]
+    SQL -->|Read-Only Queries| API["FastAPI Server"]
+    API -->|REST API| CON["React Console"]
 ```
 
 ## Related Documentation

@@ -54,28 +54,28 @@ Every incoming failure reason from Razorpay is classified into one of four rigid
 
 ```mermaid
 flowchart LR
-    RZ[Razorpay Webhook] -->|HMAC-SHA256| ING[Webhook Ingress]
-    ING -->|Atomically Enqueue| DB[(SQLite WAL)]
+    RZ["Razorpay Webhook"] -->|HMAC-SHA256| ING["Webhook Ingress"]
+    ING -->|Atomically Enqueue| DB[("SQLite WAL")]
     ING -->|202 Accepted| RZ
     
-    subgraph Engine [Deterministic Worker Pipeline]
-        WRK[Recovery Worker] -->|Lease Job| DB
-        WRK -->|Classify Reason| TRG[Triage Engine]
-        TRG -->|Pure Evaluation| RBK[Rulebook]
-        RBK -->|Proposed Action| GTK{Gatekeeper Gate}
-        GTK -->|9 Safety Invariants| PASS[Authorized Effect]
-        PASS -->|Idempotent Intent| ADAPT[Effect Adapter]
-        ADAPT -->|Hash-Chained Log| LDG[(Audit Ledger)]
+    subgraph Engine ["Deterministic Worker Pipeline"]
+        WRK["Recovery Worker"] -->|Lease Job| DB
+        WRK -->|Classify Reason| TRG["Triage Engine"]
+        TRG -->|Pure Evaluation| RBK["Rulebook"]
+        RBK -->|Proposed Action| GTK{"Gatekeeper Gate"}
+        GTK -->|9 Safety Invariants| PASS["Authorized Effect"]
+        PASS -->|Idempotent Intent| ADAPT["Effect Adapter"]
+        ADAPT -->|Hash-Chained Log| LDG[("Audit Ledger")]
     end
 
-    subgraph AI [Advisory Boundary (Opt-In)]
-        RBK -.->|Sanitized Context| ADV[Advisor Sandbox]
-        ADV -.->|Zero Action Authority| LLM[Ollama / Cloud LLM]
+    subgraph AI ["Advisory Boundary (Opt-In)"]
+        RBK -.->|Sanitized Context| ADV["Advisor Sandbox"]
+        ADV -.->|Zero Action Authority| LLM["Ollama / Cloud LLM"]
     end
 
     ADAPT -.->|Dry Run / Test API| RZ
-    DB -->|Read-Only REST| API[FastAPI Server]
-    API -->|Live Insights| UI[React Console]
+    DB -->|Read-Only REST| API["FastAPI Server"]
+    API -->|Live Insights| UI["React Console"]
 ```
 
 ---
